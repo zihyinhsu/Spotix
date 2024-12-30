@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spotix.API", "Spotix.API\Spotix.API.csproj", "{9506D96B-090A-4EA0-8785-C4F2799004B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spotix.MVC", "Spotix.MVC\Spotix.MVC.csproj", "{838D196A-5632-466C-922D-38874EC21076}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spotix.Utilities", "Spotix.Utilities\Spotix.Utilities.csproj", "{98EB1A03-8B66-442D-91E2-B08C7B95A97C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9506D96B-090A-4EA0-8785-C4F2799004B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9506D96B-090A-4EA0-8785-C4F2799004B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9506D96B-090A-4EA0-8785-C4F2799004B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9506D96B-090A-4EA0-8785-C4F2799004B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{838D196A-5632-466C-922D-38874EC21076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{838D196A-5632-466C-922D-38874EC21076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{838D196A-5632-466C-922D-38874EC21076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{838D196A-5632-466C-922D-38874EC21076}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98EB1A03-8B66-442D-91E2-B08C7B95A97C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98EB1A03-8B66-442D-91E2-B08C7B95A97C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98EB1A03-8B66-442D-91E2-B08C7B95A97C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98EB1A03-8B66-442D-91E2-B08C7B95A97C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
