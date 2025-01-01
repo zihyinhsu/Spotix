@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Spotix.API.Middlewares;
 using Spotix.Utilities.Interfaces;
 using Spotix.Utilities.Models.EFModels;
@@ -15,8 +16,41 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
 
+	options.SwaggerDoc("v1", new OpenApiInfo
+	{
+		Title = "Spotix API",
+		Version = "v1"
+	});
+
+	// 在 Swagger 中添加 JWT 身份驗證
+	options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+	{
+		Name = "Authorization",
+		In = ParameterLocation.Header,
+		Type = SecuritySchemeType.ApiKey,
+		Scheme = JwtBearerDefaults.AuthenticationScheme,
+	});
+
+	options.AddSecurityRequirement(new OpenApiSecurityRequirement
+	{
+		{
+			new OpenApiSecurityScheme{
+			Reference = new OpenApiReference{
+				Type = ReferenceType.SecurityScheme,
+				Id = JwtBearerDefaults.AuthenticationScheme
+			},
+			Scheme = "Oauth2",
+			Name = JwtBearerDefaults.AuthenticationScheme,
+			In = ParameterLocation.Header
+		},
+			new List<string>()
+		}
+	});
+});
 
 
 // 注入DBContext，指定遷移程序集
