@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Spotix.API.Middlewares;
 using Spotix.Utilities.Interfaces;
 using Spotix.Utilities.Models.EFModels;
 using Spotix.Utilities.Models.Repositories;
@@ -67,12 +68,17 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 
 // 使用身分驗證服務(必須在 UseAuthorization 之前)
 app.UseAuthentication();
 app.UseAuthorization();
 
+// 註冊中間件
+app.UseMiddleware<ResponseHandleMiddleware>();
+
 app.MapControllers();
 
 app.Run();
+
