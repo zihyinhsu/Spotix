@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Spotix.Utilities.Models.ViewModels;
-using Spotix.Utilities.Models.Dtos;
+using Spotix.Utilities.Models.DTOs;
 using Spotix.Utilities.Models.EFModels;
 using Spotix.Utilities.Interfaces;
+using Spotix.API.Exceptions;
 
 namespace Spotix.API.Controllers
 {
@@ -46,8 +47,7 @@ namespace Spotix.API.Controllers
 					}
 				}
 			}
-
-			return BadRequest($"{identityResult.Errors}, 請聯繫系統管理員");
+			throw new ArgumentException($"{identityResult.Errors}, 請聯繫系統管理員");
 		}
 
 		[HttpPost]
@@ -72,12 +72,14 @@ namespace Spotix.API.Controllers
 							Email = user.Email,
 							JwtToken = jwtToken
 						};
+
+						HttpContext.Items["message"] = "登入成功";
+
 						return Ok(response);
 					}
 				}
 			}
-
-			return BadRequest("登入失敗");
+			throw new ResourceNotFoundException("登入失敗");
 		}
 	}
 }
