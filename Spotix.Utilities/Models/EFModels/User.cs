@@ -8,19 +8,7 @@ namespace Spotix.Utilities.Models.EFModels;
 
 public partial class User : IdentityUser
 {
-    //public int Id { get; set; }
-
-    //public string Email { get; set; }
-
-    //public string EncryptedPassword { get; set; }
-
-    //public bool EmailConfirmed { get; set; }
-
     public string LineId { get; set; }
-
-    //public string UserName { get; set; }
-
-    //public string PhoneNumber { get; set; }
 
     public bool Gender { get; set; }
 

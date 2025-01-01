@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Spotix.API.Exceptions;
 using System.Net.Mime;
 using System.Net;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Spotix.API.Middlewares
 {
@@ -23,6 +24,12 @@ namespace Spotix.API.Middlewares
 		{
 			var originalBodyStream = context.Response.Body;
 
+			//if (originalBodyStream == null) {
+			//	var response = new ResponseResult(context.Response.StatusCode, true, message, null);
+			//	var jsonResponse = JsonConvert.SerializeObject(response);
+			//	await context.Response.WriteAsync(jsonResponse);
+			//	return;
+			//}
 			using (var responseBody = new MemoryStream())
 			{
 				context.Response.Body = responseBody;
@@ -34,8 +41,22 @@ namespace Spotix.API.Middlewares
 					responseBody.Seek(0, SeekOrigin.Begin); // 將 responseBody 流的位置設置為流的開始位置。這樣做的目的是在讀取或寫入流之前，確保從流的開始位置進行操作
 
 					var responseText = await new StreamReader(responseBody).ReadToEndAsync();
+					Console.WriteLine(responseText.Length);
+					IEnumerable<object> data = [];
 
-					var data = JsonConvert.DeserializeObject(responseText);
+					if (!string.IsNullOrEmpty(responseText))
+					{
+						try
+						{
+							// 嘗試反序列化為具體型別
+							data = (IEnumerable<object>)JsonConvert.DeserializeObject(responseText);
+						}
+						catch (JsonException)
+						{
+							// 如果反序列化失敗，將資料設置為原始值
+							data = new List<object>();
+						}
+					}
 					var message = context.Items["message"] as string;
 					var response = new ResponseResult(context.Response.StatusCode, true, message, data);
 
@@ -50,7 +71,7 @@ namespace Spotix.API.Middlewares
 					context.Response.Body = originalBodyStream;
 					responseBody.Seek(0, SeekOrigin.Begin);
 
-					var response = new ResponseResult(context.Response.StatusCode, false, ex.Message, null);
+					var response = new ResponseResult(context.Response.StatusCode, false, ex.Message, new List<object>());
 					var jsonResponse = JsonConvert.SerializeObject(response);
 					await context.Response.WriteAsync(jsonResponse);
 				}

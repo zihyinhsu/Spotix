@@ -43,11 +43,14 @@ namespace Spotix.API.Controllers
 					identityResult = await userManager.AddToRolesAsync(user, registerRequestDto.Roles);
 					if (identityResult.Succeeded)
 					{
-						return Ok("註冊成功! 請登入帳號");
+						HttpContext.Items["message"] = "註冊成功! 請登入帳號";
+
+						return CreatedAtAction(nameof(Register), new List<object>());
 					}
 				}
 			}
-			throw new ArgumentException($"{identityResult.Errors}, 請聯繫系統管理員");
+			var errors = identityResult.Errors.Select(e => e.Description).ToArray()[1];
+			throw new ArgumentException($"{errors}, 請聯繫系統管理員");
 		}
 
 		[HttpPost]
