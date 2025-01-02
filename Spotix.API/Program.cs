@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Spotix.API.Middlewares;
 using Spotix.Utilities.Interfaces;
+using Spotix.Utilities.Models.Services;
 using Spotix.Utilities.Models.EFModels;
 using Spotix.Utilities.Models.Repositories;
 using System.Text;
@@ -62,24 +63,33 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // DI
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
+builder.Services.AddScoped<IImageRepository, ImageRepository>();// 註冊 ImageRepository
+builder.Services.AddScoped<ImageService>();// 註冊 ImageService
+
 
 // Add JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(options =>
 	options.TokenValidationParameters = new TokenValidationParameters
 	{
+		AuthenticationType = "Jwt",
 		ValidateIssuer = true, // 指示是否應驗證令牌的發行者
 		ValidateAudience = true,// 指示是否應驗證令牌的接收方
 		ValidateLifetime = true, // 指示是否應驗證令牌的有效期
 		ValidateIssuerSigningKey = true, // 指示是否應驗證令牌的簽名密鑰
 		ValidIssuer = builder.Configuration["Jwt:Issuer"],// 指定受信任的發行者
+		//ValidAudiences = builder.Configuration.GetSection("Jwt:Audiences").Get<string[]>(), // 指定受信任的接收方
+
 		ValidAudience = builder.Configuration["Jwt:Audience"],// 指定受信任的接收方
+
+
 		IssuerSigningKey = new SymmetricSecurityKey(
 			Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])) // 指定用於驗證令牌簽名的密鑰。
 	});
 
+
 // Add Identity
-builder.Services.AddIdentity<User, IdentityRole>(options =>
+builder.Services.AddIdentityCore<User>(options =>
 	{
 		options.Password.RequireNonAlphanumeric = false;
 		options.Password.RequiredLength = 8;
@@ -90,6 +100,8 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 		options.SignIn.RequireConfirmedEmail = false;
 		options.SignIn.RequireConfirmedPhoneNumber = false;
 	})
+	.AddRoles<IdentityRole>()
+	.AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider)
 	.AddEntityFrameworkStores<AppDbContext>()
 	.AddDefaultTokenProviders();
 

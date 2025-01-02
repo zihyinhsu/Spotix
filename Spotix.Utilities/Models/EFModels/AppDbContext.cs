@@ -21,7 +21,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 
 	public virtual DbSet<Order> Orders { get; set; }
 
-	public virtual DbSet<OrderTicket> OrderTickets { get; set; }
+	//public virtual DbSet<OrderTicket> OrderTickets { get; set; }
 
 	public virtual DbSet<Place> Places { get; set; }
 
@@ -30,6 +30,9 @@ public partial class AppDbContext : IdentityDbContext<User>
 	public virtual DbSet<Ticket> Tickets { get; set; }
 
 	public virtual DbSet<User> Users { get; set; }
+
+	public virtual DbSet<Image> Images { get; set; }
+
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -90,17 +93,17 @@ public partial class AppDbContext : IdentityDbContext<User>
 				.HasConstraintName("FK_Orders_Users");
 		});
 
-		modelBuilder.Entity<OrderTicket>(entity =>
-		{
-			entity.HasOne(d => d.Order).WithMany(p => p.OrderTickets)
-				.HasForeignKey(d => d.OrderId)
-				.HasConstraintName("FK_OrderTickets_Orders");
+		//modelBuilder.Entity<OrderTicket>(entity =>
+		//{
+		//	entity.HasOne(d => d.Order).WithMany(p => p.OrderTickets)
+		//		.HasForeignKey(d => d.OrderId)
+		//		.HasConstraintName("FK_OrderTickets_Orders");
 
-			entity.HasOne(d => d.Ticket).WithMany(p => p.OrderTickets)
-				.HasForeignKey(d => d.TicketId)
-				.OnDelete(DeleteBehavior.ClientSetNull)
-				.HasConstraintName("FK_OrderTickets_Tickets");
-		});
+		//	entity.HasOne(d => d.Ticket).WithMany(p => p.OrderTickets)
+		//		.HasForeignKey(d => d.TicketId)
+		//		.OnDelete(DeleteBehavior.ClientSetNull)
+		//		.HasConstraintName("FK_OrderTickets_Tickets");
+		//});
 
 		modelBuilder.Entity<Place>(entity =>
 		{

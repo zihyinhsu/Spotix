@@ -24,12 +24,6 @@ namespace Spotix.API.Middlewares
 		{
 			var originalBodyStream = context.Response.Body;
 
-			//if (originalBodyStream == null) {
-			//	var response = new ResponseResult(context.Response.StatusCode, true, message, null);
-			//	var jsonResponse = JsonConvert.SerializeObject(response);
-			//	await context.Response.WriteAsync(jsonResponse);
-			//	return;
-			//}
 			using (var responseBody = new MemoryStream())
 			{
 				context.Response.Body = responseBody;
