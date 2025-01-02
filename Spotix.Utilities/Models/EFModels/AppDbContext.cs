@@ -21,8 +21,6 @@ public partial class AppDbContext : IdentityDbContext<User>
 
 	public virtual DbSet<Order> Orders { get; set; }
 
-	//public virtual DbSet<OrderTicket> OrderTickets { get; set; }
-
 	public virtual DbSet<Place> Places { get; set; }
 
 	public virtual DbSet<Session> Sessions { get; set; }
@@ -62,6 +60,8 @@ public partial class AppDbContext : IdentityDbContext<User>
 
 		modelBuilder.Entity<Event>(entity =>
 		{
+			entity.HasIndex(e => e.Name, "IX_Events").IsUnique();
+
 			entity.Property(e => e.Host)
 				.IsRequired()
 				.HasMaxLength(50);
@@ -70,11 +70,17 @@ public partial class AppDbContext : IdentityDbContext<User>
 			entity.Property(e => e.Name)
 				.IsRequired()
 				.HasMaxLength(50);
+			entity.Property(e => e.Published).HasDefaultValue(true);
 
 			entity.HasOne(d => d.Place).WithMany(p => p.Events)
 				.HasForeignKey(d => d.PlaceId)
 				.OnDelete(DeleteBehavior.ClientSetNull)
 				.HasConstraintName("FK_Events_Places");
+		});
+
+		modelBuilder.Entity<Image>(entity =>
+		{
+			entity.Property(e => e.ImageUrl).IsRequired();
 		});
 
 		modelBuilder.Entity<Order>(entity =>
@@ -87,26 +93,16 @@ public partial class AppDbContext : IdentityDbContext<User>
 			entity.Property(e => e.Payment)
 				.IsRequired()
 				.HasMaxLength(50);
+			entity.Property(e => e.UserId).HasMaxLength(450);
 
 			entity.HasOne(d => d.User).WithMany(p => p.Orders)
 				.HasForeignKey(d => d.UserId)
 				.HasConstraintName("FK_Orders_Users");
 		});
 
-		//modelBuilder.Entity<OrderTicket>(entity =>
-		//{
-		//	entity.HasOne(d => d.Order).WithMany(p => p.OrderTickets)
-		//		.HasForeignKey(d => d.OrderId)
-		//		.HasConstraintName("FK_OrderTickets_Orders");
-
-		//	entity.HasOne(d => d.Ticket).WithMany(p => p.OrderTickets)
-		//		.HasForeignKey(d => d.TicketId)
-		//		.OnDelete(DeleteBehavior.ClientSetNull)
-		//		.HasConstraintName("FK_OrderTickets_Tickets");
-		//});
-
 		modelBuilder.Entity<Place>(entity =>
 		{
+			entity.Property(e => e.Enabled).HasDefaultValue(true);
 			entity.Property(e => e.Name)
 				.IsRequired()
 				.HasMaxLength(50);
@@ -114,11 +110,14 @@ public partial class AppDbContext : IdentityDbContext<User>
 
 		modelBuilder.Entity<Session>(entity =>
 		{
+			entity.HasIndex(e => e.Name, "IX_Sessions").IsUnique();
+
 			entity.Property(e => e.AvailableTime).HasColumnType("datetime");
 			entity.Property(e => e.Name)
 				.IsRequired()
 				.HasMaxLength(50);
 			entity.Property(e => e.PublishTime).HasColumnType("datetime");
+			entity.Property(e => e.Published).HasDefaultValue(true);
 			entity.Property(e => e.SessionTime).HasColumnType("datetime");
 
 			entity.HasOne(d => d.Event).WithMany(p => p.Sessions)
@@ -137,6 +136,15 @@ public partial class AppDbContext : IdentityDbContext<User>
 			entity.HasOne(d => d.Area).WithMany(p => p.Tickets)
 				.HasForeignKey(d => d.AreaId)
 				.HasConstraintName("FK_Tickets_Areas");
+
+			entity.HasOne(d => d.Order).WithMany(p => p.Tickets)
+				.HasForeignKey(d => d.OrderId)
+				.OnDelete(DeleteBehavior.ClientSetNull)
+				.HasConstraintName("FK_Tickets_Orders");
+			entity.Property(e => e.SeatSelection).HasDefaultValue(false);
+			entity.Property(e => e.IsTransfered).HasDefaultValue(false);
+			entity.Property(e => e.IsSold).HasDefaultValue(false);
+
 		});
 
 		modelBuilder.Entity<User>(entity =>

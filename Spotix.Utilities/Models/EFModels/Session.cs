@@ -7,23 +7,21 @@ namespace Spotix.Utilities.Models.EFModels;
 
 public partial class Session
 {
-    public int Id { get; set; }
+	public int Id { get; set; }
 
-    public string Name { get; set; }
+	public string Name { get; set; }
 
-    public DateTime SessionTime { get; set; }
+	public DateTime SessionTime { get; set; }
 
-    public DateTime AvailableTime { get; set; }
+	public DateTime AvailableTime { get; set; }
 
-    public DateTime PublishTime { get; set; }
+	public DateTime PublishTime { get; set; }
 
-    public bool Published { get; set; }
+	public bool Published { get; set; }
 
-    public int EventId { get; set; }
+	public int EventId { get; set; }
 
-    public int DisplayOrder { get; set; }
+	public virtual ICollection<Area> Areas { get; set; } = new List<Area>();
 
-    public virtual ICollection<Area> Areas { get; set; } = new List<Area>();
-
-    public virtual Event Event { get; set; }
+	public virtual Event Event { get; set; }
 }
