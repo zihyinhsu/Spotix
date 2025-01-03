@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Spotix.MVC.Models;
 using System.Diagnostics;
@@ -18,6 +19,7 @@ namespace Spotix.MVC.Controllers
 			return View();
 		}
 
+		[Authorize]
 		public IActionResult Privacy()
 		{
 			return View();

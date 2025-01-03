@@ -60,12 +60,12 @@ namespace Spotix.API.Controllers
 
 		[HttpPost]
 		[Route("Login")]
-		public async Task<IActionResult> Login([FromBody] LoginVM loginRequestDto)
+		public async Task<IActionResult> Login([FromBody] LoginVM model)
 		{
-			var user = await userManager.FindByEmailAsync(loginRequestDto.Email);
+			var user = await userManager.FindByEmailAsync(model.Email);
 			if (user != null)
 			{
-				var checkPasswordResult = await userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+				var checkPasswordResult = await userManager.CheckPasswordAsync(user, model.Password);
 				if (checkPasswordResult)
 				{
 					var roles = await userManager.GetRolesAsync(user);
@@ -78,7 +78,8 @@ namespace Spotix.API.Controllers
 						{
 							UserName = user.UserName,
 							Email = user.Email,
-							JwtToken = jwtToken
+							JwtToken = jwtToken,
+							AvatarUrl = user.AvatarUrl
 						};
 
 						HttpContext.Items["message"] = "登入成功";
