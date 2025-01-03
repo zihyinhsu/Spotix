@@ -26,7 +26,7 @@ namespace Spotix.Utilities.Models.Repositories
 			{
 				claims.Add(new Claim(ClaimTypes.Role, role));
 			}
-			Console.WriteLine(claims);
+
 			// 創建一個對稱式加密金鑰
 			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
 

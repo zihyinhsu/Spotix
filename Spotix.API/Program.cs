@@ -78,8 +78,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 		ValidateLifetime = true, // 指示是否應驗證令牌的有效期
 		ValidateIssuerSigningKey = true, // 指示是否應驗證令牌的簽名密鑰
 		ValidIssuer = builder.Configuration["Jwt:Issuer"],// 指定受信任的發行者
-		//ValidAudiences = builder.Configuration.GetSection("Jwt:Audiences").Get<string[]>(), // 指定受信任的接收方
-
 		ValidAudience = builder.Configuration["Jwt:Audience"],// 指定受信任的接收方
 
 
