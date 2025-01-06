@@ -13,6 +13,7 @@ public partial class Event
 
 	public string Info { get; set; }
 
+	public string CoverUrl { get; set; }
 	public string ImgUrl { get; set; }
 
 	public int PlaceId { get; set; }
