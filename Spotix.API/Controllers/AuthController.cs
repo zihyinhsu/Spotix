@@ -53,7 +53,7 @@ namespace Spotix.API.Controllers
 					{
 						HttpContext.Items["message"] = "註冊成功! 請登入帳號";
 
-						return CreatedAtAction(nameof(Register), new List<object>());
+						return CreatedAtAction(nameof(Register), null);
 					}
 				}
 			}

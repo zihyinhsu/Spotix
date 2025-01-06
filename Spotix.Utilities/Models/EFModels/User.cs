@@ -17,4 +17,6 @@ public partial class User : IdentityUser
     public string AvatarUrl { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+	public List<string> Roles { get; set; }
 }
