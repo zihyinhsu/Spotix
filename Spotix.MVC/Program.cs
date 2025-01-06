@@ -48,6 +48,8 @@ builder.Services.AddIdentityCore<User>(options =>
 	options.SignIn.RequireConfirmedAccount = false;
 	options.SignIn.RequireConfirmedEmail = false;
 	options.SignIn.RequireConfirmedPhoneNumber = false;
+	options.User.AllowedUserNameCharacters = null;
+
 })
 	.AddRoles<IdentityRole>()
 	.AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider)

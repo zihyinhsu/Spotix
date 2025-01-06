@@ -35,15 +35,24 @@ namespace Spotix.API.Middlewares
 					responseBody.Seek(0, SeekOrigin.Begin); // 將 responseBody 流的位置設置為流的開始位置。這樣做的目的是在讀取或寫入流之前，確保從流的開始位置進行操作
 
 					var responseText = await new StreamReader(responseBody).ReadToEndAsync();
-					Console.WriteLine(responseText.Length);
-					IEnumerable<object> data = [];
+
+					var data = new List<object>();
 
 					if (!string.IsNullOrEmpty(responseText))
 					{
 						try
 						{
-							// 嘗試反序列化為具體型別
-							data = (IEnumerable<object>)JsonConvert.DeserializeObject(responseText);
+							// 嘗試反序列化為 object
+							var deserializedObject = JsonConvert.DeserializeObject(responseText);
+
+							if (deserializedObject is List<object> list)
+							{
+								data = list;
+							}
+							else if (deserializedObject != null)
+							{
+								data = new List<object> { deserializedObject };
+							}
 						}
 						catch (JsonException)
 						{
@@ -51,7 +60,8 @@ namespace Spotix.API.Middlewares
 							data = new List<object>();
 						}
 					}
-					var message = context.Items["message"] as string;
+					var message = context.Items["message"] as string ?? "";
+
 					var response = new ResponseResult(context.Response.StatusCode, true, message, data);
 
 					var jsonResponse = JsonConvert.SerializeObject(response);

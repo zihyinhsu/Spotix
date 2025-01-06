@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Spotix.Utilities.Models.EFModels;
+using Spotix.Utilities.Models.ViewModels;
 
 namespace Spotix.API.Mappings
 {
@@ -6,8 +8,8 @@ namespace Spotix.API.Mappings
 	{
 		public AutoMapperProfiles()
 		{
-			//CreateMap<Region, RegionDto>().ReverseMap();
-			
+			CreateMap<ProfileVM, User>().ReverseMap();
+
 		}
 	}
 }

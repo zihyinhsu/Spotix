@@ -9,6 +9,7 @@ using Spotix.Utilities.Models.Services;
 using Spotix.Utilities.Models.EFModels;
 using Spotix.Utilities.Models.Repositories;
 using System.Text;
+using Spotix.API.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,10 +63,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // DI
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-
 builder.Services.AddScoped<IImageRepository, ImageRepository>();// 註冊 ImageRepository
 builder.Services.AddScoped<ImageService>();// 註冊 ImageService
 
+// Add AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 // Add JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -79,8 +81,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 		ValidateIssuerSigningKey = true, // 指示是否應驗證令牌的簽名密鑰
 		ValidIssuer = builder.Configuration["Jwt:Issuer"],// 指定受信任的發行者
 		ValidAudience = builder.Configuration["Jwt:Audience"],// 指定受信任的接收方
-
-
 		IssuerSigningKey = new SymmetricSecurityKey(
 			Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])) // 指定用於驗證令牌簽名的密鑰。
 	});
@@ -97,6 +97,8 @@ builder.Services.AddIdentityCore<User>(options =>
 		options.SignIn.RequireConfirmedAccount = false; 
 		options.SignIn.RequireConfirmedEmail = false;
 		options.SignIn.RequireConfirmedPhoneNumber = false;
+		options.User.AllowedUserNameCharacters = null;
+
 	})
 	.AddRoles<IdentityRole>()
 	.AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider)

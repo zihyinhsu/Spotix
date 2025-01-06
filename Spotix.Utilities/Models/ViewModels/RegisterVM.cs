@@ -48,7 +48,7 @@ namespace Spotix.Utilities.Models.ViewModels
 		public string? AvatarUrl { get; set; } = null;
 
 
-		[Required(ErrorMessage = "請選擇一個角色")]
+		//[Required(ErrorMessage = "請選擇一個角色")]
 		public string SelectedRole { get; set; }
 
 		[Display(Name = "角色")]

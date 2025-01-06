@@ -9,6 +9,7 @@ using Spotix.API.Exceptions;
 using Spotix.Utilities.Models.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using AutoMapper;
 
 namespace Spotix.API.Controllers
 {
@@ -18,12 +19,14 @@ namespace Spotix.API.Controllers
 	{
 		private readonly UserManager<User> userManager;
 		private readonly ITokenRepository tokenRepository;
+		private readonly IMapper mapper;
 		private readonly ImageService imageService;
 
-		public AuthController(UserManager<User> userManager, ITokenRepository tokenRepository, ImageService imageService)
+		public AuthController(UserManager<User> userManager, ITokenRepository tokenRepository, IMapper mapper, ImageService imageService)
 		{
 			this.userManager = userManager;
 			this.tokenRepository = tokenRepository;
+			this.mapper = mapper;
 			this.imageService = imageService;
 		}
 		// POST: api/Auth/Register
@@ -50,7 +53,7 @@ namespace Spotix.API.Controllers
 					{
 						HttpContext.Items["message"] = "註冊成功! 請登入帳號";
 
-						return CreatedAtAction(nameof(Register), new List<object>());
+						return CreatedAtAction(nameof(Register), null);
 					}
 				}
 			}
@@ -101,7 +104,7 @@ namespace Spotix.API.Controllers
 			var userEmail = User.FindFirstValue(ClaimTypes.Email);
 
 			var user = await userManager.FindByEmailAsync(userEmail);
-			
+
 			// 從Images資料庫找 user.avatarUrl 是否存在
 			var ExistingImage = await imageService.GetImageByUrlAsync(user.AvatarUrl);
 			if (ExistingImage != null)
@@ -127,27 +130,28 @@ namespace Spotix.API.Controllers
 		}
 
 		// 修改使用者資料
-		//[HttpPut]
-		//[Route("UpdateProfile")]
-		//public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto updateProfileDto)
-		//{
-		//	var user = await userManager.FindByIdAsync(updateProfileDto.UserId.ToString());
-		//	if (user == null)
-		//	{
-		//		return NotFound("User not found");
-		//	}
+		[HttpPut]
+		[Route("UpdateProfile")]
+		[Authorize]
+		public async Task<IActionResult> UpdateProfile([FromBody] ProfileVM model)
+		{
+			var userEmail = User.FindFirstValue(ClaimTypes.Email);
+			var user = await userManager.FindByEmailAsync(userEmail);
 
-		//	user.Email = updateProfileDto.Email;
-		//	user.UserName = updateProfileDto.UserName;
+			// 使用 AutoMapper 將 model 映射到 user
+			mapper.Map(model, user);
 
-		//	var result = await userManager.UpdateAsync(user);
-		//	if (result.Succeeded)
-		//	{
-		//		return Ok("Profile updated successfully");
-		//	}
+			var result = await userManager.UpdateAsync(user);
+			if (result.Succeeded)
+			{
+				var profile = mapper.Map<ProfileVM>(user);
+				HttpContext.Items["message"] = "更新成功";
 
-		//	return BadRequest(result.Errors);
-		//}
+				return Ok(profile);
+			}
+
+			return BadRequest(result.Errors);
+		}
 
 	}
 }

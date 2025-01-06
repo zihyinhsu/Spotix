@@ -9,12 +9,13 @@ namespace Spotix.Utilities.Models.ViewModels
 {
 	public class LoginVM
 	{
-		[Required(ErrorMessage = "Email為必填")]
+		[Display(Name = "Email")]
+		[Required(ErrorMessage = "{0} 為必填")]
 		[EmailAddress]
 		public string Email { get; set; }
 
-
-		[Required(ErrorMessage = "密碼 為必填")]
+		[Display(Name = "密碼")]
+		[Required(ErrorMessage = "{0} 為必填")]
 		[DataType(DataType.Password)]
 		public string Password { get; set; }
 	}
