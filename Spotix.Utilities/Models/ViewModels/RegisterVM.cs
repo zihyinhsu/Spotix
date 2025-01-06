@@ -38,6 +38,7 @@ namespace Spotix.Utilities.Models.ViewModels
 		public string? LineId { get; set; } = null;
 
 		[Display(Name = "性別")]
+		[Required(ErrorMessage = "請選擇您的性別")]
 		public bool Gender { get; set; }
 
 		[Display(Name = "居住地址")]
@@ -48,10 +49,10 @@ namespace Spotix.Utilities.Models.ViewModels
 
 
 		//[Required(ErrorMessage = "請選擇一個角色")]
-		public string? SelectedRole { get; set; }
+		public string SelectedRole { get; set; }
 
 		[Display(Name = "角色")]
-		public List<string>? Roles { get; set; } = new List<string> { "Admin", "User" };
+		public List<string> Roles { get; set; } = new List<string> { "Admin", "User" };
 
 		[Display(Name = "手機號碼")]
 		[Required(ErrorMessage = "{0} 為必填")]
