@@ -9,6 +9,7 @@ using Spotix.Utilities.Models.DTOs;
 using Spotix.Utilities.Models.Repositories;
 using Spotix.Utilities.Interfaces;
 using Spotix.Utilities.Models.Services;
+using Spotix.Utilities.Models.Dtos;
 
 namespace Spotix.MVC.Controllers
 {
@@ -22,9 +23,58 @@ namespace Spotix.MVC.Controllers
 			this.userManager = userManager;
 			this.imageService = imageService;
 		}
+
+		public IActionResult Register()
+		{
+			var model = new RegisterVM
+			{
+				Roles = new List<string> { "Admin", "User" } // 根據您的需求設置角色
+			};
+			return View(model);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Register(RegisterVM model)
+		{
+			if (!ModelState.IsValid) return View(model);
+			var user = new User
+			{
+				UserName = model.UserName,
+				Email = model.Email,
+				Gender = model.Gender
+			};
+
+			var identityResult = await userManager.CreateAsync(user, model.Password);
+
+			if (identityResult.Succeeded)
+			{
+				// Add roles to user
+				if (model.Roles != null && model.Roles.Any())
+				{
+					identityResult = await userManager.AddToRolesAsync(user, model.Roles);
+					if (identityResult.Succeeded)
+					{
+						TempData["message"] = "註冊成功! 請登入帳號";
+						return RedirectToAction("Login");
+					}
+				}
+			}
+			//var errors = identityResult.Errors.Select(e => e.Description).ToArray()[1];
+			return View();
+			//throw new ArgumentException($"{errors}, 請聯繫系統管理員");
+		}
+
+		public ActionResult Logout()
+		{
+			HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+			return RedirectToAction("Login");
+		}
+
 		public IActionResult Login(string returnUrl = "/")
 		{
 			ViewBag.ReturnUrl = returnUrl;
+			ViewBag.Message = TempData["message"];
 			return View();
 		}
 
@@ -71,5 +121,7 @@ namespace Spotix.MVC.Controllers
 
 			return Redirect(returnUrl);
 		}
+
+		
 	}
 }
