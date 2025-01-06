@@ -9,7 +9,6 @@ using Spotix.Utilities.Models.DTOs;
 using Spotix.Utilities.Models.Repositories;
 using Spotix.Utilities.Interfaces;
 using Spotix.Utilities.Models.Services;
-using Spotix.Utilities.Models.Dtos;
 
 namespace Spotix.MVC.Controllers
 {
