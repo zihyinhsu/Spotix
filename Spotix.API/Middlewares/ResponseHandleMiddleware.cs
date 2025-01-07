@@ -38,7 +38,8 @@ namespace Spotix.API.Middlewares
 
 					var data = new List<object>();
 
-					if (!string.IsNullOrEmpty(responseText))
+					if (responseText == "[]") data = [];
+					else if (!string.IsNullOrEmpty(responseText))
 					{
 						try
 						{
@@ -51,6 +52,7 @@ namespace Spotix.API.Middlewares
 							}
 							else if (deserializedObject != null)
 							{
+
 								data = new List<object> { deserializedObject };
 							}
 						}

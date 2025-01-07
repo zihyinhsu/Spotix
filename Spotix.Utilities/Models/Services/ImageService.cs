@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Spotix.Utilities.Interfaces;
 using Spotix.Utilities.Models.EFModels;
+using Spotix.Utilities.Models.Interfaces;
 
 namespace Spotix.Utilities.Models.Services
 {

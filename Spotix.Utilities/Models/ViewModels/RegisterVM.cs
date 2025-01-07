@@ -49,7 +49,7 @@ namespace Spotix.Utilities.Models.ViewModels
 
 
 		//[Required(ErrorMessage = "請選擇一個角色")]
-		public string SelectedRole { get; set; }
+		public string? SelectedRole { get; set; }
 
 		[Display(Name = "角色")]
 		public List<string> Roles { get; set; } = new List<string> { "Admin", "User" };

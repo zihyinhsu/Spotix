@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Spotix.Utilities.Models.ViewModels;
 using Spotix.Utilities.Models.DTOs;
 using Spotix.Utilities.Models.EFModels;
-using Spotix.Utilities.Interfaces;
 using Spotix.API.Exceptions;
 using Spotix.Utilities.Models.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AutoMapper;
+using Spotix.Utilities.Models.Interfaces;
 
 namespace Spotix.API.Controllers
 {
