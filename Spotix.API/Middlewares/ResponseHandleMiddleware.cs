@@ -72,7 +72,7 @@ namespace Spotix.API.Middlewares
 				catch (Exception ex)
 				{
 					//logger.LogError(ex, ex.Message);
-					await HandleCustomExceptionResponseAsync(context, ex);
+					HandleCustomExceptionResponseAsync(context, ex);
 
 					context.Response.Body = originalBodyStream;
 					responseBody.Seek(0, SeekOrigin.Begin);
@@ -86,7 +86,7 @@ namespace Spotix.API.Middlewares
 
 
 
-		private async Task HandleCustomExceptionResponseAsync(HttpContext context, Exception ex)
+		private void HandleCustomExceptionResponseAsync(HttpContext context, Exception ex)
 		{
 			context.Response.ContentType = MediaTypeNames.Application.Json;
 

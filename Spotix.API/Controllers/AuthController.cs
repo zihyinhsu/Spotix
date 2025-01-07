@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AutoMapper;
 using Spotix.Utilities.Models.Interfaces;
+using Spotix.API.CustomActionFilter;
 
 namespace Spotix.API.Controllers
 {
@@ -32,6 +33,7 @@ namespace Spotix.API.Controllers
 		// POST: api/Auth/Register
 		[HttpPost]
 		[Route("Register")]
+		[ValidateModel]
 		public async Task<IActionResult> Register([FromBody] RegisterVM registerRequestDto)
 		{
 
@@ -63,6 +65,7 @@ namespace Spotix.API.Controllers
 
 		[HttpPost]
 		[Route("Login")]
+		[ValidateModel]
 		public async Task<IActionResult> Login([FromBody] LoginVM model)
 		{
 			var user = await userManager.FindByEmailAsync(model.Email);
@@ -133,6 +136,7 @@ namespace Spotix.API.Controllers
 		[HttpPut]
 		[Route("UpdateProfile")]
 		[Authorize]
+		[ValidateModel]
 		public async Task<IActionResult> UpdateProfile([FromBody] ProfileVM model)
 		{
 			var userEmail = User.FindFirstValue(ClaimTypes.Email);

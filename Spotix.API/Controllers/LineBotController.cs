@@ -61,7 +61,7 @@ namespace Spotix.API.Controllers
 					}
 				}
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				return Ok();
 			}

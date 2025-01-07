@@ -30,7 +30,7 @@ namespace Spotix.API.Controllers
 		}
 
 		[HttpGet("Url")]
-		public async Task<IActionResult> GetLoginUrl([FromQuery] string redirectUrl)
+		public IActionResult GetLoginUrl([FromQuery] string redirectUrl)
 		{
 			var uri = lineLoginService.GetLoginUrl(redirectUrl);
 
@@ -48,7 +48,7 @@ namespace Spotix.API.Controllers
 		[HttpGet("Tokens")]
 		public async Task<IActionResult> GetTokensByAuthToken([FromQuery] string authToken, [FromQuery] string callbackUrl)
 		{
-			UserIdTokenProfileDto userProfileByIdToken = await lineLoginService.GetTokensByAuthToken(authToken, callbackUrl);
+			var userProfileByIdToken = await lineLoginService.GetTokensByAuthToken(authToken, callbackUrl);
 			// 查找或創建用戶
 			var user = await userManager.FindByEmailAsync(userProfileByIdToken.Email);
 			// 如果用戶不存在，創建新用戶

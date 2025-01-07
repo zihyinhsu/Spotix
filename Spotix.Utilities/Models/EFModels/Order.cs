@@ -17,7 +17,7 @@ public partial class Order
 
 	public string UserId { get; set; }
 
-	public string Number { get; set; }
+	public string OrderNumber { get; set; }
 
 	public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 

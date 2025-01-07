@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Spotix.API.CustomActionFilter;
 using Spotix.Utilities.Models.DTOs;
 using Spotix.Utilities.Models.Interfaces;
 
@@ -20,6 +21,7 @@ namespace Spotix.API.Controllers
 		}
 
 		[HttpGet]
+		[ValidateModel]
 		public async Task<IActionResult> GetAllEvent(
 			[FromQuery] string? filterQuery = null,
 			[FromQuery] int? year = null,

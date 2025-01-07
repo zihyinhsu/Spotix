@@ -11,7 +11,7 @@ namespace Spotix.Utilities.Models.Interfaces
 	{
 		Task<List<Event>> GetAllAsync(string? filterQuery = null, int? year = null, int? month = null, string? sortBy = null, int pageNumber = 1, int pageSize = 10);
 		Task<Event?> GetByIdAsync(int id);
-		void CreateAsync(Event region);
+		void CreateAsync(Event model);
 		Task<Event?> UpdateAsync(int id, Event model);
 		Task<Event?> DeleteAsync(int id);
 	}

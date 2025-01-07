@@ -14,9 +14,14 @@ namespace Spotix.API.Mappings
 				.ForMember(dest => dest.Place, opt => opt.MapFrom(src => src.Place))
 				.ForMember(dest => dest.Sessions, opt => opt.MapFrom(src => src.Sessions));
 
+
+			CreateMap<Area, AreaDto>()
+				.ForMember(dest => dest.Tickets, opt => opt.MapFrom(src => src.Tickets));
+
+			CreateMap<Ticket, TicketDto>().ReverseMap();
 			CreateMap<Place, PlaceDto>().ReverseMap();
 			CreateMap<Session, SessionDto>().ReverseMap();
-
+			CreateMap<Area, AreaVM>().ReverseMap();
 		}
 	}
 }

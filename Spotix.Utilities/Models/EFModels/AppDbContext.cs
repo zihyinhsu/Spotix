@@ -86,7 +86,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 		modelBuilder.Entity<Order>(entity =>
 		{
 			entity.Property(e => e.CreatedTime).HasColumnType("datetime");
-			entity.Property(e => e.Number)
+			entity.Property(e => e.OrderNumber)
 				.IsRequired()
 				.HasMaxLength(50)
 				.IsUnicode(false);
@@ -127,7 +127,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 
 		modelBuilder.Entity<Ticket>(entity =>
 		{
-			entity.Property(e => e.Number)
+			entity.Property(e => e.TicketNumber)
 				.IsRequired()
 				.HasMaxLength(50)
 				.IsUnicode(false);

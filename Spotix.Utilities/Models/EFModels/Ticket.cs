@@ -11,11 +11,13 @@ public partial class Ticket
 
 	public int AreaId { get; set; }
 
+	public int RowNumber { get; set; }
+
 	public int SeatNumber { get; set; }
 
 	public bool SeatSelection { get; set; }
 
-	public string Number { get; set; }
+	public string TicketNumber { get; set; }
 
 	public bool IsSold { get; set; }
 
@@ -23,9 +25,7 @@ public partial class Ticket
 
 	public string Reciever { get; set; }
 
-	public int DisplayOrder { get; set; }
-
-	public int OrderId { get; set; }
+	public int? OrderId { get; set; }
 
 	public virtual Area Area { get; set; }
 
