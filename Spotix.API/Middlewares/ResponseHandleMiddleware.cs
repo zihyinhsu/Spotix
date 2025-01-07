@@ -4,6 +4,7 @@ using Spotix.API.Exceptions;
 using System.Net.Mime;
 using System.Net;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Newtonsoft.Json.Linq;
 
 namespace Spotix.API.Middlewares
 {
@@ -38,17 +39,16 @@ namespace Spotix.API.Middlewares
 
 					var data = new List<object>();
 
-					if (responseText == "[]") data = [];
-					else if (!string.IsNullOrEmpty(responseText))
+					if (!string.IsNullOrEmpty(responseText))
 					{
 						try
 						{
 							// 嘗試反序列化為 object
 							var deserializedObject = JsonConvert.DeserializeObject(responseText);
 
-							if (deserializedObject is List<object> list)
+							if (deserializedObject is JArray jArray)
 							{
-								data = list;
+								data = jArray.ToObject<List<object>>();
 							}
 							else if (deserializedObject != null)
 							{
