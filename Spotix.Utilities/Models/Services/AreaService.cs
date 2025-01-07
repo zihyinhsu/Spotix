@@ -56,7 +56,6 @@ namespace Spotix.Utilities.Models.Services
 						AreaId = areaModel.Id,
 						RowNumber = i + 1,
 						SeatNumber = c + 1,
-						SeatSelection = false,
 						TicketNumber = Guid.NewGuid().ToString(),
 						IsSold = false,
 						IsTransfered = false,

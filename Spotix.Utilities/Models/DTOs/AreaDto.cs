@@ -19,7 +19,7 @@ namespace Spotix.Utilities.Models.DTOs
 
 		public int Qty { get; set; }
 
-		public int DisplayOrder { get; set; }
+		public int? DisplayOrder { get; set; }
 
 		public List<TicketDto> Tickets { get; set; }
 	}

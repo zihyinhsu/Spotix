@@ -38,14 +38,13 @@ public partial class AppDbContext : IdentityDbContext<User>
 		base.OnModelCreating(modelBuilder); // 確保調用基類的 OnModelCreating 方法
 
 		// roles 定義
-		//var roles = new List<IdentityRole>
-		//{
-		//	new IdentityRole { Id = "d7bece5e-cba2-4f5a-a158-2f56919bd43d", ConcurrencyStamp = "d7bece5e-cba2-4f5a-a158-2f56919bd43d", Name = "Admin", NormalizedName = "Admin".ToUpper() },
-		//	new IdentityRole { Id = "25935620-161c-4c2f-8936-fe88436ad02c", ConcurrencyStamp = "25935620-161c-4c2f-8936-fe88436ad02c", Name = "User", NormalizedName = "User".ToUpper() }
-		//};
+		var roles = new List<IdentityRole>
+		{
+			new IdentityRole { Id = "d7bece5e-cba2-4f5a-a158-2f56919bd43d", ConcurrencyStamp = "d7bece5e-cba2-4f5a-a158-2f56919bd43d", Name = "Admin", NormalizedName = "Admin".ToUpper() },
+			new IdentityRole { Id = "25935620-161c-4c2f-8936-fe88436ad02c", ConcurrencyStamp = "25935620-161c-4c2f-8936-fe88436ad02c", Name = "User", NormalizedName = "User".ToUpper() }
+		};
 
-		//modelBuilder.Entity<IdentityRole>().HasData(roles);
-		// roles 定義
+		modelBuilder.Entity<IdentityRole>().HasData(roles);
 
 		modelBuilder.Entity<Area>(entity =>
 		{
@@ -131,7 +130,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 				.IsRequired()
 				.HasMaxLength(50)
 				.IsUnicode(false);
-			entity.Property(e => e.Reciever).HasMaxLength(100);
+			entity.Property(e => e.RecieverId).HasMaxLength(100);
 
 			entity.HasOne(d => d.Area).WithMany(p => p.Tickets)
 				.HasForeignKey(d => d.AreaId)
@@ -141,7 +140,6 @@ public partial class AppDbContext : IdentityDbContext<User>
 				.HasForeignKey(d => d.OrderId)
 				.OnDelete(DeleteBehavior.ClientSetNull)
 				.HasConstraintName("FK_Tickets_Orders");
-			entity.Property(e => e.SeatSelection).HasDefaultValue(false);
 			entity.Property(e => e.IsTransfered).HasDefaultValue(false);
 			entity.Property(e => e.IsSold).HasDefaultValue(false);
 

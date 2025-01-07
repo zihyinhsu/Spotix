@@ -15,15 +15,13 @@ public partial class Ticket
 
 	public int SeatNumber { get; set; }
 
-	public bool SeatSelection { get; set; }
-
 	public string TicketNumber { get; set; }
 
 	public bool IsSold { get; set; }
 
 	public bool IsTransfered { get; set; }
 
-	public string Reciever { get; set; }
+	public string RecieverId { get; set; }
 
 	public int? OrderId { get; set; }
 

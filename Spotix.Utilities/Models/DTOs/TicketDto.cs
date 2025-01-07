@@ -12,19 +12,17 @@ namespace Spotix.Utilities.Models.DTOs
 
 		public int AreaId { get; set; }
 
+		public int RowNumber { get; set; }
+
 		public int SeatNumber { get; set; }
 
-		public bool SeatSelection { get; set; }
-
-		public string Number { get; set; }
+		public string TicketNumber { get; set; }
 
 		public bool IsSold { get; set; }
 
 		public bool IsTransfered { get; set; }
 
-		public string Reciever { get; set; }
-
-		public int DisplayOrder { get; set; }
+		public string RecieverId { get; set; }
 
 		public int OrderId { get; set; }
 	}
