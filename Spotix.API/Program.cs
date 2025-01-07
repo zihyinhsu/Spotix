@@ -66,8 +66,8 @@ builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();// 딩쩤 ImageRepository
 builder.Services.AddScoped<IEventRepository, EventRepository>();// 딩쩤 EventRepository
 builder.Services.AddScoped<IAreaRepository, AreaRepository>();// 딩쩤 AreaRepository
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();// 딩쩤 ITicketRepository
 builder.Services.AddScoped<AreaService>();// 딩쩤 AreaService
-
 builder.Services.AddScoped<ImageService>();// 딩쩤 ImageService
 
 // Add AutoMapper

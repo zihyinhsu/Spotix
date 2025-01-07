@@ -32,6 +32,7 @@ namespace Spotix.Utilities.Models.Repositories
 		{
 			await dbContext.Areas.AddAsync(model);
 			await dbContext.SaveChangesAsync();
+
 			return model;
 		}
 

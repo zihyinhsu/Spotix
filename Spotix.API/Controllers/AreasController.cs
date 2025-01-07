@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Spotix.API.CustomActionFilter;
+using Spotix.API.Exceptions;
 using Spotix.Utilities.Models.DTOs;
 using Spotix.Utilities.Models.EFModels;
 using Spotix.Utilities.Models.Interfaces;
@@ -24,17 +25,28 @@ namespace Spotix.API.Controllers
 			this.areaService = areaRepository;
 			this.mapper = mapper;
 		}
+
+		//[HttpGet("BySession/{sessionId:int}")]
+		//[ValidateModel]
+		//public async Task<IActionResult> GetBySessionId(int sessionId)
+		//{
+		//	var areasModel = await areaService.GetBySessionId(sessionId);
+		//	HttpContext.Items["message"] = "搜尋成功";
+		//	var areaDto = mapper.Map<List<AreaDto>>(areasModel);
+		//	return Ok(areaDto);
+		//}
+
 		[HttpGet]
-		[Route("{sessionId:int}")]
+		[Route("{id:int}")]
 		[ValidateModel]
-		public async Task<IActionResult> GetBySessionId(int sessionId)
+		public async Task<IActionResult> GetById(int id)
 		{
-			var areasModel = await areaService.GetBySessionId(sessionId);
+			var areasModel = await areaService.GetByIdAsync(id);
+			if(areasModel == null) throw new ResourceNotFoundException("搜尋失敗");
 			HttpContext.Items["message"] = "搜尋成功";
-			var areaDto = mapper.Map<List<AreaDto>>(areasModel);
+			var areaDto = mapper.Map<AreaDto>(areasModel);
 			return Ok(areaDto);
 		}
-
 
 		[HttpPost]
 		[ValidateModel]
