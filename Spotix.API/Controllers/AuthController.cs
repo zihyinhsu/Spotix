@@ -11,6 +11,7 @@ using System.Security.Claims;
 using AutoMapper;
 using Spotix.Utilities.Models.Interfaces;
 using Spotix.API.CustomActionFilter;
+using Spotix.Utilities.Models;
 
 namespace Spotix.API.Controllers
 {
@@ -150,11 +151,29 @@ namespace Spotix.API.Controllers
 			{
 				var profile = mapper.Map<ProfileVM>(user);
 				HttpContext.Items["message"] = "更新成功";
-
 				return Ok(profile);
 			}
 
 			return BadRequest(result.Errors);
+		}
+
+		// 取得使用者資料
+		[HttpGet]
+		[Route("Profile")]
+		[Authorize]
+		public async Task<IActionResult> GetProfile()
+		{
+			var userEmail = User.FindFirstValue(ClaimTypes.Email);
+			var user = await userManager.FindByEmailAsync(userEmail);
+
+			if(user == null) throw new ResourceNotFoundException("使用者不存在");
+			
+			var roles = await userManager.GetRolesAsync(user);
+			user.Roles = roles.ToList();
+			var profile = mapper.Map<UserDto>(user);
+			
+			HttpContext.Items["message"] = "成功取得使用者資料";
+			return Ok(profile);
 		}
 
 	}

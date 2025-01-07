@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Spotix.Utilities.Models;
 using Spotix.Utilities.Models.DTOs;
 using Spotix.Utilities.Models.EFModels;
 using Spotix.Utilities.Models.ViewModels;
@@ -13,8 +14,8 @@ namespace Spotix.API.Mappings
 			CreateMap<Event, EventDto>()
 				.ForMember(dest => dest.Place, opt => opt.MapFrom(src => src.Place))
 				.ForMember(dest => dest.Sessions, opt => opt.MapFrom(src => src.Sessions));
-
-
+			CreateMap<UserDto, User>().ReverseMap()
+				.ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.Roles));
 			CreateMap<Area, AreaDto>()
 				.ForMember(dest => dest.Tickets, opt => opt.MapFrom(src => src.Tickets));
 

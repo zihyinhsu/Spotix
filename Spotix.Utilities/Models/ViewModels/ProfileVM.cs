@@ -26,8 +26,5 @@ namespace Spotix.Utilities.Models.ViewModels
 		[Display(Name = "手機")]
 		[Required(ErrorMessage = "{0} 為必填")]
 		public string PhoneNumber { get; set; }
-
-
-
 	}
 }
