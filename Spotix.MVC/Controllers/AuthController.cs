@@ -7,7 +7,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Spotix.Utilities.Models.DTOs;
 using Spotix.Utilities.Models.Repositories;
-using Spotix.Utilities.Interfaces;
 using Spotix.Utilities.Models.Services;
 
 namespace Spotix.MVC.Controllers

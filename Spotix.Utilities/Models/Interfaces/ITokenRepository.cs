@@ -1,6 +1,6 @@
 ﻿using Spotix.Utilities.Models.EFModels;
 
-namespace Spotix.Utilities.Interfaces
+namespace Spotix.Utilities.Models.Interfaces
 {
 	public interface ITokenRepository
 	{

@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Spotix.API.Middlewares;
-using Spotix.Utilities.Interfaces;
 using Spotix.Utilities.Models.Services;
 using Spotix.Utilities.Models.EFModels;
 using Spotix.Utilities.Models.Repositories;
 using System.Text;
 using Spotix.API.Mappings;
+using Spotix.Utilities.Models.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +64,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // DI
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();// µù¥U ImageRepository
+builder.Services.AddScoped<IEventRepository, EventRepository>();// µù¥U EventRepository
+
 builder.Services.AddScoped<ImageService>();// µù¥U ImageService
 
 // Add AutoMapper

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Spotix.Utilities.Interfaces;
 using Spotix.Utilities.Models.EFModels;
+using Spotix.Utilities.Models.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

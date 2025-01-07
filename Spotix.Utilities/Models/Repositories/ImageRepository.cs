@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Spotix.Utilities.Interfaces;
 using Spotix.Utilities.Models.EFModels;
+using Spotix.Utilities.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
