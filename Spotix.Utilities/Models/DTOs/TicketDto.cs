@@ -24,6 +24,6 @@ namespace Spotix.Utilities.Models.DTOs
 
 		public string RecieverId { get; set; }
 
-		public int OrderId { get; set; }
+		public int? OrderId { get; set; }
 	}
 }

@@ -43,8 +43,10 @@ namespace Spotix.API.Controllers
 		{
 			var areasModel = await areaService.GetByIdAsync(id);
 			if(areasModel == null) throw new ResourceNotFoundException("搜尋失敗");
+
 			HttpContext.Items["message"] = "搜尋成功";
 			var areaDto = mapper.Map<AreaDto>(areasModel);
+			areaDto.TicketsLeftCount = areasModel.Tickets.Count(t => !t.IsSold);
 			return Ok(areaDto);
 		}
 

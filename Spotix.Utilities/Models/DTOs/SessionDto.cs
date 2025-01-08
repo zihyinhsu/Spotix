@@ -19,5 +19,10 @@ namespace Spotix.Utilities.Models.DTOs
 		public DateTime PublishTime { get; set; }
 
 		public bool Published { get; set; }
+
+		public int EventId { get; set; }
+
+		public List<AreaDto> Areas { get; set; }
+
 	}
 }

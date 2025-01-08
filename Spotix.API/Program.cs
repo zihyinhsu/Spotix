@@ -63,12 +63,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // DI
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-builder.Services.AddScoped<IImageRepository, ImageRepository>();// 딩쩤 ImageRepository
-builder.Services.AddScoped<IEventRepository, EventRepository>();// 딩쩤 EventRepository
-builder.Services.AddScoped<IAreaRepository, AreaRepository>();// 딩쩤 AreaRepository
-builder.Services.AddScoped<ITicketRepository, TicketRepository>();// 딩쩤 ITicketRepository
-builder.Services.AddScoped<AreaService>();// 딩쩤 AreaService
-builder.Services.AddScoped<ImageService>();// 딩쩤 ImageService
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IAreaRepository, AreaRepository>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+
+builder.Services.AddScoped<AreaService>();
+builder.Services.AddScoped<ImageService>();
 
 // Add AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));

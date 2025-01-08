@@ -31,7 +31,8 @@ namespace Spotix.Utilities.Models.Services
 			return areasModel;
 		}
 
-		public async Task<Area?> GetByIdAsync(int id) {
+		public async Task<Area?> GetByIdAsync(int id)
+		{
 			var areasModel = await areaRepository.GetByIdAsync(id);
 			return areasModel;
 		}
@@ -43,23 +44,29 @@ namespace Spotix.Utilities.Models.Services
 
 			// 依照 area 的 qty 建立 tickets
 			var qty = areaModel.Qty;
-			var tickets = new List<Ticket>();
 			var columns = 12;
-			var rowsNum = (int)Math.Round((double)qty / 12, MidpointRounding.AwayFromZero);
+			var tickets = new List<Ticket>();
+			int rowNumber = 1;
+			int seatNumber = 1;
 
-			for (int i = 0; i < rowsNum; i++)
+			for (int i = 1; i <= qty; i++)
 			{
-				for (int c = 0; c < columns; c++)
+				tickets.Add(new Ticket
 				{
-					tickets.Add(new Ticket
-					{
-						AreaId = areaModel.Id,
-						RowNumber = i + 1,
-						SeatNumber = c + 1,
-						TicketNumber = Guid.NewGuid().ToString(),
-						IsSold = false,
-						IsTransfered = false,
-					});
+					AreaId = areaModel.Id,
+					RowNumber = rowNumber,
+					SeatNumber = seatNumber,
+					TicketNumber = Guid.NewGuid().ToString(),
+					IsSold = false,
+					IsTransfered = false,
+				});
+
+				seatNumber++;
+
+				if (seatNumber > columns)
+				{
+					seatNumber = 1;
+					rowNumber++;
 				}
 			}
 
