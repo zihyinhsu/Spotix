@@ -68,7 +68,9 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IAreaRepository, AreaRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
+builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<AreaService>();
 builder.Services.AddScoped<ImageService>();
 

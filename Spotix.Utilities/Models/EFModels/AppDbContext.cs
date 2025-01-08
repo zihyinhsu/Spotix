@@ -65,6 +65,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 				.IsRequired()
 				.HasMaxLength(50);
 			entity.Property(e => e.ImgUrl).IsRequired();
+			entity.Property(e => e.CoverUrl).IsRequired();
 			entity.Property(e => e.Info).IsRequired();
 			entity.Property(e => e.Name)
 				.IsRequired()
@@ -151,6 +152,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 			entity.Property(e => e.LineId)
 				.HasMaxLength(100)
 				.HasColumnName("LineID");
+
 		});
 
 		OnModelCreatingPartial(modelBuilder);
