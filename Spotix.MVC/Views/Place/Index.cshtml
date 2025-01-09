@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Spotix.Utilities.Models.ViewModels.PlaceVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="fw-bolder m-3">場地清單</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary btn-sm m-3">新增</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @* @Html.DisplayNameFor(model => model.Name) *@場地名稱
+            </th>
+            <th>
+                @* @Html.DisplayNameFor(model => model.DisplayOrder) *@顯示順序
+            </th>
+            <th>
+               @*  @Html.DisplayNameFor(model => model.Enabled) *@是否啟用
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Enabled)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
