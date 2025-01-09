@@ -1,4 +1,5 @@
-﻿using Spotix.Utilities.Models.EFModels;
+﻿using Spotix.Utilities.Models.DTOs;
+using Spotix.Utilities.Models.EFModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,17 @@ namespace Spotix.Utilities.Models
 
 		public bool Gender { get; set; }
 
+		public DateTime Birthday { get; set; }
+
 		public string Address { get; set; }
 
 		public string AvatarUrl { get; set; }
 
-		public List<string> Roles { get; set; }
 		public string PhoneNumber { get; set; }
+
+		public List<string> Roles { get; set; }
+
+		public List<OrderDto> Orders { get; set; }
+
 	}
 }

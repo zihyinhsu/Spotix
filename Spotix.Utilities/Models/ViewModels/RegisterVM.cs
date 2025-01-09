@@ -41,6 +41,10 @@ namespace Spotix.Utilities.Models.ViewModels
 		[Required(ErrorMessage = "請選擇您的性別")]
 		public bool Gender { get; set; }
 
+		[Display(Name = "生日")]
+		[Required(ErrorMessage = "{0} 為必填")]
+		public DateTime? Birthday { get; set; } = null;
+
 		[Display(Name = "居住地址")]
 		public string? Address { get; set; } = null;
 

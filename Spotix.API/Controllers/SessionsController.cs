@@ -28,9 +28,7 @@ namespace Spotix.API.Controllers
 			if (sessionModel == null) throw new ResourceNotFoundException("搜尋失敗");
 			HttpContext.Items["message"] = "搜尋成功";
 
-			Console.WriteLine(sessionModel);
 			var sessionDto = mapper.Map<SessionDto>(sessionModel);
-			Console.WriteLine(sessionDto);
 
 			return Ok(sessionDto);
 		}
