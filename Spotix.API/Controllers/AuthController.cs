@@ -106,6 +106,7 @@ namespace Spotix.API.Controllers
 		[HttpPost]
 		[Route("UploadAvatar")]
 		[Authorize]
+		[ValidateModel]
 		public async Task<ActionResult<Image>> UploadAvatar([FromForm] AddImageVM request)
 		{
 			// 取得使用者資料
@@ -138,8 +139,8 @@ namespace Spotix.API.Controllers
 		}
 
 		// 修改使用者資料
-		[HttpPut]
-		[Route("UpdateProfile")]
+		[HttpPatch]
+		[Route("Profile")]
 		[Authorize]
 		[ValidateModel]
 		public async Task<IActionResult> UpdateProfile([FromBody] ProfileVM model)
