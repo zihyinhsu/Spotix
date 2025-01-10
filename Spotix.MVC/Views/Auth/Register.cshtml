@@ -19,9 +19,9 @@
                         <form asp-action="Register">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
-                                    <label asp-for="UserName" class="form-label"></label>
-                                    <input type="text" class="form-control form-control-user">
-                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                <label asp-for="UserName" class="form-label"></label>
+                                <input asp-for="UserName" class="form-control form-control-user">
+                                <span asp-validation-for="UserName" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Email" class="form-label"></label>
@@ -68,6 +68,11 @@
 
                             </div>
                             <div class="form-group">
+                                <label asp-for="Birthday" class="form-label"></label>
+                                <input type="date" asp-for="Birthday" class="form-control form-control-user">
+                                <span asp-validation-for="Birthday" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
                                 <label asp-for="Address" class="form-label"></label>
                                 <input asp-for="Address" class="form-control form-control-user">
                                 <span asp-validation-for="Address" class="text-danger"></span>
@@ -87,9 +92,10 @@
                                 <input asp-for="PhoneNumber" class="form-control form-control-user">
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
-                            <a href="~/Login" class="btn btn-primary btn-user btn-block">
-                                申請
-                            </a>
+                            <input type="submit" value="申請" class="btn btn-primary" />
+                                
+                            
+
 
 @*                             <div>
                                 <a asp-action="Index">Back to List</a>
