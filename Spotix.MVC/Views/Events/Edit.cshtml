@@ -1,0 +1,93 @@
+﻿@model Spotix.Utilities.Models.ViewModels.EventVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h4 class="fw-bolder mt-5">編輯活動內容 : </h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Info" class="control-label"></label>
+                <textarea asp-for="Info" class="form-control" id="infoEditor">  </textarea>
+                <span asp-validation-for="Info" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CoverUrl" class="control-label"></label>
+                <input asp-for="CoverUrl" class="form-control" />
+                <span asp-validation-for="CoverUrl" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImgUrl" class="control-label"></label>
+                <input asp-for="ImgUrl" class="form-control" />
+                <span asp-validation-for="ImgUrl" class="text-danger"></span>
+            </div>
+            @* <div class="mb-3"> *@
+            @*     <label asp-for="PlaceName" class="control-label"></label> *@
+            @*     <select asp-for="PlaceName" class="form-control" asp-items="ViewBag.PlaceList"></select> *@
+            @*     <span asp-validation-for="PlaceName" class="text-danger"></span> *@
+            @* </div> *@
+            <div class="mb-3">
+                <label asp-for="PlaceId" class="control-label"></label>
+                <select asp-for="PlaceId" class="form-control" asp-items="ViewBag.PlaceList"></select>
+                <span asp-validation-for="PlaceId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Host" class="control-label"></label>
+                <input asp-for="Host" class="form-control" />
+                <span asp-validation-for="Host" class="text-danger"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
+                </label>
+            </div>
+            @* <div class="mb-3"> *@
+            @*     <label asp-for="FirstSessionTime" class="control-label"></label> *@
+            @*     @Html.DisplayFor(model => model.FirstSessionTime) *@
+            @* </div> *@
+            
+            <div class="mb-3 mt-5">
+                <input type="submit" value="儲存變更" class="btn btn-outline-primary" /> |
+                <a asp-action="Index" class="btn btn-secondary">回到清單頁</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
+    <script>
+        let editor;
+        ClassicEditor
+            .create(document.querySelector('#infoEditor'))
+            .then(newEditor => {
+                editor = newEditor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        // document.getElementById('saveDraftButton').addEventListener('click', function() {
+        //     將 CKEditor 的內容同步到對應的輸入框
+        //     document.querySelector('textarea[name="Info"]').value = editor.getData();
+        //     alert('內容已暫存');
+        // });
+
+        // 在表單提交之前同步 CKEditor 的內容
+        // document.querySelector('form').addEventListener('submit', function() {
+        //     document.querySelector('textarea[name="Info"]').value = editor.getData();
+        // });
+    </script>
+}
