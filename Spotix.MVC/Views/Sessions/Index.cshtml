@@ -111,8 +111,8 @@
             <div class="mx-auto">
                 每頁
                 <select class="custom-select" name="pageSize" onchange="changePageSize()">
-                    @*
-                        <option value="5" selected="@((int)ViewData[" pageSize"]= =5)">5</option> *@
+                    
+                    <option value="5" selected="@((int)ViewData["pageSize"]==5)">5</option> 
                     <option value="10" selected="@((int)ViewData["pageSize"]==10)">10</option>
                     <option value="30" selected="@((int)ViewData["pageSize"]==30)">30</option>
                     <option value="50" selected="@((int)ViewData["pageSize"]==50)">50</option>
@@ -120,8 +120,8 @@
                 <a asp-action="Index" 
                     asp-route-sortOrder="@ViewData["CurrentSort"]" 
                    asp-route-pageNumber="@(Model.PageIndex - 1)" 
-                  asp-route-currentFilterNumber="@ViewData["CurrentFilterSession"]" 
-                   asp-route-CurrentFilterCustomer="@ViewData["CurrentFilterEvent"]" 
+                  asp-route-currentFilterSession="@ViewData["CurrentFilterSession"]" 
+                   asp-route-CurrentFilterEvent="@ViewData["CurrentFilterEvent"]" 
                     asp-route-pageSize="@ViewData["PageSize"]" 
                    class="btn btn-outline-secondary btn-sm @prevDisabled"> 
                    上一頁 
@@ -209,10 +209,9 @@
                 @Html.DisplayFor(modelItem => item.EventName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                    @Html.ActionLink("編輯", "Edit", new { id = item.Id }) |
                 @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |  *@
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-            </td>
+                    @Html.ActionLink("刪除", "Delete", new { id = item.Id }, new { @style = "color:red;" })
         </tr>
 }
     </tbody>
