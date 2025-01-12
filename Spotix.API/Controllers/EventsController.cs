@@ -11,7 +11,7 @@ namespace Spotix.API.Controllers
 	[ApiController]
 	public class EventsController : ControllerBase
 	{
-		public readonly IEventRepository eventRepository;
+		private readonly IEventRepository eventRepository;
 		private readonly IMapper mapper;
 
 		public EventsController(IEventRepository eventRepository, IMapper mapper)
