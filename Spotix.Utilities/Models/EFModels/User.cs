@@ -12,7 +12,9 @@ public partial class User : IdentityUser
 
     public bool Gender { get; set; }
 
-    public string Address { get; set; }
+	public DateTime Birthday { get; set; }
+
+	public string Address { get; set; }
 
     public string AvatarUrl { get; set; }
 

@@ -54,6 +54,17 @@ builder.Services.AddSwaggerGen(options =>
 	});
 });
 
+// 設定 CORS
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowSpecificOrigins",
+		builder =>
+		{
+			builder.WithOrigins("http://localhost:3000", "https://spo-tix.vercel.app")
+				   .AllowAnyHeader()
+				   .AllowAnyMethod();
+		});
+});
 
 // 注入DBContext，指定遷移程序集
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -68,7 +79,9 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IAreaRepository, AreaRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
+builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<AreaService>();
 builder.Services.AddScoped<ImageService>();
 
@@ -122,6 +135,10 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+
+
+// 使用 CORS 中間件
+app.UseCors("AllowSpecificOrigins");
 
 // 使用身分驗證服務(必須在 UseAuthorization 之前)
 app.UseAuthentication();

@@ -21,11 +21,9 @@ namespace Spotix.Utilities.Models.DTOs
 
 		public int? DisplayOrder { get; set; }
 
-
 		public List<TicketDto> Tickets { get; set; }
 
 		public int TicketsLeftCount { get; set; }
 
-		//public int TicketsLeftCount => Tickets.Count(t => !t.IsSold);
 	}
 }

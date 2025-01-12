@@ -23,13 +23,17 @@ namespace Spotix.API.Controllers
 		private readonly ITokenRepository tokenRepository;
 		private readonly IMapper mapper;
 		private readonly ImageService imageService;
+		private readonly OrderService orderService;
 
-		public AuthController(UserManager<User> userManager, ITokenRepository tokenRepository, IMapper mapper, ImageService imageService)
+
+		public AuthController(UserManager<User> userManager, ITokenRepository tokenRepository, IMapper mapper, ImageService imageService, OrderService orderService)
 		{
 			this.userManager = userManager;
 			this.tokenRepository = tokenRepository;
 			this.mapper = mapper;
 			this.imageService = imageService;
+			this.orderService = orderService;
+
 		}
 		// POST: api/Auth/Register
 		[HttpPost]
@@ -102,6 +106,7 @@ namespace Spotix.API.Controllers
 		[HttpPost]
 		[Route("UploadAvatar")]
 		[Authorize]
+		[ValidateModel]
 		public async Task<ActionResult<Image>> UploadAvatar([FromForm] AddImageVM request)
 		{
 			// 取得使用者資料
@@ -134,8 +139,8 @@ namespace Spotix.API.Controllers
 		}
 
 		// 修改使用者資料
-		[HttpPut]
-		[Route("UpdateProfile")]
+		[HttpPatch]
+		[Route("Profile")]
 		[Authorize]
 		[ValidateModel]
 		public async Task<IActionResult> UpdateProfile([FromBody] ProfileVM model)
@@ -166,12 +171,16 @@ namespace Spotix.API.Controllers
 			var userEmail = User.FindFirstValue(ClaimTypes.Email);
 			var user = await userManager.FindByEmailAsync(userEmail);
 
-			if(user == null) throw new ResourceNotFoundException("使用者不存在");
-			
+			if (user == null) throw new ResourceNotFoundException("使用者不存在");
+
 			var roles = await userManager.GetRolesAsync(user);
+
+			user.Orders = await orderService.GetByUserId(user.Id);
+
 			user.Roles = roles.ToList();
+
 			var profile = mapper.Map<UserDto>(user);
-			
+
 			HttpContext.Items["message"] = "成功取得使用者資料";
 			return Ok(profile);
 		}

@@ -12,6 +12,7 @@ namespace Spotix.Utilities.Models.Interfaces
 	{
 		Task<List<Session>> GetAllAsync();
 		Task<SessionDto?> GetByIdAsync(int id);
+		Task<List<SessionDto>> GetByEventIdAsync(int eventId);
 		Task<Session> CreateAsync(Session model);
 		Task<Session?> UpdateAsync(int id, Session model);
 		Task<Session?> DeleteAsync(int id);

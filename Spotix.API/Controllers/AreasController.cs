@@ -50,6 +50,7 @@ namespace Spotix.API.Controllers
 			return Ok(areaDto);
 		}
 
+
 		[HttpPost]
 		[ValidateModel]
 		public async Task<IActionResult> Create([FromBody] AreaVM model)
