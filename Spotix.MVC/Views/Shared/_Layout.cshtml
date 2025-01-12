@@ -28,7 +28,6 @@
                     </ul>
                 </div>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <script>@User.Identity.IsAuthenticated</script>
                     <ul class="navbar-nav flex-grow-1">
 
                         @{
@@ -43,6 +42,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Sessions" asp-action="Index">場次清單</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="Index">活動清單</a>
+                                </li>
                                
                             }
                             else
@@ -53,6 +55,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Register">註冊</a>
                                 </li>
+                               
                             }
                         }
 
