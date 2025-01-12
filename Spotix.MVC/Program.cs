@@ -24,6 +24,11 @@ builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 builder.Services.AddScoped<IImageRepository, ImageRepository>();// µù¥U ImageRepository
 builder.Services.AddScoped<ImageService>();// µù¥U ImageService
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IAreaRepository, AreaRepository>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+builder.Services.AddScoped<AreaService>();
 
 // ²K¥[ Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
