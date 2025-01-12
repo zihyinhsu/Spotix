@@ -23,7 +23,8 @@ namespace Spotix.API.Mappings
 
 			CreateMap<Ticket, TicketDto>().ReverseMap();
 			CreateMap<Place, PlaceDto>().ReverseMap();
-			CreateMap<Session, SessionDto>().ReverseMap();
+			CreateMap<Session, SessionDto>()
+				.ForMember(dest => dest.Areas, opt => opt.MapFrom(src => src.Areas));
 			CreateMap<Area, AreaVM>().ReverseMap();
 
 			CreateMap<Order, OrderVM>().ReverseMap();

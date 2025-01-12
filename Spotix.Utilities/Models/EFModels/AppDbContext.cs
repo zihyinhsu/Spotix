@@ -50,7 +50,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 		{
 			entity.Property(e => e.Name)
 				.IsRequired()
-				.HasMaxLength(50);
+				.HasMaxLength(100);
 
 			entity.HasOne(d => d.Session).WithMany(p => p.Areas)
 				.HasForeignKey(d => d.SessionId)

@@ -19,8 +19,6 @@ public partial class Area
 
     public int? DisplayOrder { get; set; }
 
-	//public int TicketsLeftCount { get; set; }
-
 	public virtual Session Session { get; set; }
 
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();

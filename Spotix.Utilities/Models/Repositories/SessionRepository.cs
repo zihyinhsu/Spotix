@@ -33,6 +33,33 @@ namespace Spotix.Utilities.Models.Repositories
 			throw new NotImplementedException();
 		}
 
+		public async Task<List<SessionDto>> GetByEventIdAsync(int eventId)
+		{
+			return await dbContext.Sessions
+				.Include(x => x.Areas)
+				.Select(session => new SessionDto
+				{
+					Id = session.Id,
+					Name = session.Name,
+					SessionTime = session.SessionTime,
+					AvailableTime = session.AvailableTime,
+					PublishTime = session.PublishTime,
+					Published = session.Published,
+					EventId = session.EventId,
+					Areas = session.Areas.Select(area => new AreaDto
+					{
+						Id = area.Id,
+						Name = area.Name,
+						Price = area.Price,
+						SessionId = area.SessionId,
+						Qty = area.Qty,
+						DisplayOrder = area.DisplayOrder,
+						TicketsLeftCount = area.Tickets.Count(t => !t.IsSold)
+					}).ToList()
+				})
+				.Where(x => x.EventId == eventId)
+				.ToListAsync();
+		}
 		public async Task<SessionDto?> GetByIdAsync(int id)
 		{
 			return await dbContext.Sessions

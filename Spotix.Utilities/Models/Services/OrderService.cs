@@ -20,6 +20,7 @@ namespace Spotix.Utilities.Models.Services
 
 		public async Task<Order> Create(Order model)
 		{
+			// 要填寫底下的票的userId 和 isSold
 			return await orderRepository.CreateAsync(model);
 		}
 		public async Task<Order?> GetById(int id)
