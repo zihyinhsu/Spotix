@@ -18,6 +18,8 @@ namespace Spotix.Utilities.Models.DTOs
 
 		public string TicketNumber { get; set; }
 
+		public string SessionName { get; set; }
+
 		public bool IsSold { get; set; }
 
 		public bool IsTransfered { get; set; }
