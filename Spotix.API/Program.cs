@@ -10,6 +10,8 @@ using Spotix.Utilities.Models.Repositories;
 using System.Text;
 using Spotix.API.Mappings;
 using Spotix.Utilities.Models.Interfaces;
+using Spotix.Utilities.NewebPay;
+using Microsoft.Extensions.Caching.Distributed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +56,8 @@ builder.Services.AddSwaggerGen(options =>
 	});
 });
 
+
+
 // 設定 CORS
 builder.Services.AddCors(options =>
 {
@@ -84,6 +88,7 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<AreaService>();
 builder.Services.AddScoped<ImageService>();
+builder.Services.AddScoped<LineBotService>();
 
 // Add AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
@@ -124,7 +129,18 @@ builder.Services.AddIdentityCore<User>(options =>
 	.AddEntityFrameworkStores<AppDbContext>()
 	.AddDefaultTokenProviders();
 
+
+// 設定 SQL Server 快取
+builder.Services.AddDistributedSqlServerCache(options =>
+{
+	options.ConnectionString = builder.Configuration.GetConnectionString("ConnectionString"); // SQL Server 連線字串
+	options.SchemaName = "dbo"; // 資料表的 Schema
+	options.TableName = "OrderCache"; // 資料表名稱
+});
 var app = builder.Build();
+
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

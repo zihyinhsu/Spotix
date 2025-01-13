@@ -13,8 +13,6 @@ public partial class Order
 
 	public int Total { get; set; }
 
-	public string Payment { get; set; }
-
 	public string UserId { get; set; }
 
 	public string OrderNumber { get; set; }
