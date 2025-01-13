@@ -66,7 +66,7 @@
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                aria-expanded="true" aria-controls="collapseTwo">
+                   aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>個人資料</span>
                 </a>
@@ -82,16 +82,17 @@
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                aria-expanded="true" aria-controls="collapseUtilities">
+                   aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>管理中心</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                data-parent="#accordionSidebar">
+                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         @* <h6 class="collapse-header">Custom Utilities:</h6> *@
                         @{
-                            if (User.Identity.IsAuthenticated) { 
+                            if (User.Identity.IsAuthenticated)
+                            {
                                 <a class="collapse-item" href="~/Place/Index">場地</a>
                                 <a class="collapse-item" href="~/Sessions/Index">場次列表</a>
                                 <a class="collapse-item" href="~/Events/Index">活動列表</a>
@@ -335,3 +336,4 @@
 </body>
 
 </html>
+
