@@ -21,8 +21,6 @@ public partial class AppDbContext : IdentityDbContext<User>
 
 	public virtual DbSet<Order> Orders { get; set; }
 
-	public virtual DbSet<OrderTicket> OrderTickets { get; set; }
-
 	public virtual DbSet<Place> Places { get; set; }
 
 	public virtual DbSet<Session> Sessions { get; set; }
@@ -31,26 +29,56 @@ public partial class AppDbContext : IdentityDbContext<User>
 
 	public virtual DbSet<User> Users { get; set; }
 
+	public virtual DbSet<Image> Images { get; set; }
+
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 
 		base.OnModelCreating(modelBuilder); // 確保調用基類的 OnModelCreating 方法
 
 		// roles 定義
-		//var roles = new List<IdentityRole>
-		//{
-		//	new IdentityRole { Id = "d7bece5e-cba2-4f5a-a158-2f56919bd43d", ConcurrencyStamp = "d7bece5e-cba2-4f5a-a158-2f56919bd43d", Name = "Admin", NormalizedName = "Admin".ToUpper() },
-		//	new IdentityRole { Id = "25935620-161c-4c2f-8936-fe88436ad02c", ConcurrencyStamp = "25935620-161c-4c2f-8936-fe88436ad02c", Name = "User", NormalizedName = "User".ToUpper() }
-		//};
+		var roles = new List<IdentityRole>
+		{
+			new IdentityRole { Id = "d7bece5e-cba2-4f5a-a158-2f56919bd43d", ConcurrencyStamp = "d7bece5e-cba2-4f5a-a158-2f56919bd43d", Name = "Admin", NormalizedName = "Admin".ToUpper() },
+			new IdentityRole { Id = "25935620-161c-4c2f-8936-fe88436ad02c", ConcurrencyStamp = "25935620-161c-4c2f-8936-fe88436ad02c", Name = "User", NormalizedName = "User".ToUpper() }
+		};
 
-		//modelBuilder.Entity<IdentityRole>().HasData(roles);
-		// roles 定義
+		modelBuilder.Entity<IdentityRole>().HasData(roles);
+
+		  // 配置 OrderCache 資料表
+  modelBuilder.Entity<OrderCache>(entity =>
+  {
+      entity.ToTable("OrderCache");
+
+      entity.HasKey(e => e.Id);
+
+      entity.Property(e => e.Id)
+          .IsRequired()
+          .HasMaxLength(449);
+
+      entity.Property(e => e.Value)
+          .IsRequired();
+
+      entity.Property(e => e.ExpiresAtTime)
+          .IsRequired();
+
+      entity.Property(e => e.SlidingExpirationInSeconds)
+          .IsRequired(false);
+
+      entity.Property(e => e.AbsoluteExpiration)
+          .IsRequired(false);
+
+      entity.HasIndex(e => e.ExpiresAtTime)
+          .HasDatabaseName("Index_ExpiresAtTime")
+          .IsUnique(false);
+  });
 
 		modelBuilder.Entity<Area>(entity =>
 		{
 			entity.Property(e => e.Name)
 				.IsRequired()
-				.HasMaxLength(50);
+				.HasMaxLength(100);
 
 			entity.HasOne(d => d.Session).WithMany(p => p.Areas)
 				.HasForeignKey(d => d.SessionId)
@@ -59,14 +87,18 @@ public partial class AppDbContext : IdentityDbContext<User>
 
 		modelBuilder.Entity<Event>(entity =>
 		{
+			entity.HasIndex(e => e.Name, "IX_Events").IsUnique();
+
 			entity.Property(e => e.Host)
 				.IsRequired()
 				.HasMaxLength(50);
 			entity.Property(e => e.ImgUrl).IsRequired();
+			entity.Property(e => e.CoverUrl).IsRequired();
 			entity.Property(e => e.Info).IsRequired();
 			entity.Property(e => e.Name)
 				.IsRequired()
 				.HasMaxLength(50);
+			entity.Property(e => e.Published).HasDefaultValue(true);
 
 			entity.HasOne(d => d.Place).WithMany(p => p.Events)
 				.HasForeignKey(d => d.PlaceId)
@@ -74,36 +106,29 @@ public partial class AppDbContext : IdentityDbContext<User>
 				.HasConstraintName("FK_Events_Places");
 		});
 
+		modelBuilder.Entity<Image>(entity =>
+		{
+			entity.Property(e => e.ImageUrl).IsRequired();
+		});
+
 		modelBuilder.Entity<Order>(entity =>
 		{
 			entity.Property(e => e.CreatedTime).HasColumnType("datetime");
-			entity.Property(e => e.Number)
+			entity.Property(e => e.OrderNumber)
 				.IsRequired()
 				.HasMaxLength(50)
 				.IsUnicode(false);
-			entity.Property(e => e.Payment)
-				.IsRequired()
-				.HasMaxLength(50);
+	
+			entity.Property(e => e.UserId).HasMaxLength(450);
 
 			entity.HasOne(d => d.User).WithMany(p => p.Orders)
 				.HasForeignKey(d => d.UserId)
 				.HasConstraintName("FK_Orders_Users");
 		});
 
-		modelBuilder.Entity<OrderTicket>(entity =>
-		{
-			entity.HasOne(d => d.Order).WithMany(p => p.OrderTickets)
-				.HasForeignKey(d => d.OrderId)
-				.HasConstraintName("FK_OrderTickets_Orders");
-
-			entity.HasOne(d => d.Ticket).WithMany(p => p.OrderTickets)
-				.HasForeignKey(d => d.TicketId)
-				.OnDelete(DeleteBehavior.ClientSetNull)
-				.HasConstraintName("FK_OrderTickets_Tickets");
-		});
-
 		modelBuilder.Entity<Place>(entity =>
 		{
+			entity.Property(e => e.Enabled).HasDefaultValue(true);
 			entity.Property(e => e.Name)
 				.IsRequired()
 				.HasMaxLength(50);
@@ -111,11 +136,14 @@ public partial class AppDbContext : IdentityDbContext<User>
 
 		modelBuilder.Entity<Session>(entity =>
 		{
+			entity.HasIndex(e => e.Name, "IX_Sessions").IsUnique();
+
 			entity.Property(e => e.AvailableTime).HasColumnType("datetime");
 			entity.Property(e => e.Name)
 				.IsRequired()
-				.HasMaxLength(50);
+				.HasMaxLength(100);
 			entity.Property(e => e.PublishTime).HasColumnType("datetime");
+			entity.Property(e => e.Published).HasDefaultValue(true);
 			entity.Property(e => e.SessionTime).HasColumnType("datetime");
 
 			entity.HasOne(d => d.Event).WithMany(p => p.Sessions)
@@ -125,15 +153,24 @@ public partial class AppDbContext : IdentityDbContext<User>
 
 		modelBuilder.Entity<Ticket>(entity =>
 		{
-			entity.Property(e => e.Number)
+			entity.Property(e => e.TicketNumber)
 				.IsRequired()
 				.HasMaxLength(50)
 				.IsUnicode(false);
-			entity.Property(e => e.Reciever).HasMaxLength(100);
+			entity.Property(e => e.RecieverId).HasMaxLength(100);
+			entity.Property(e => e.SessionName).HasMaxLength(100); 
 
 			entity.HasOne(d => d.Area).WithMany(p => p.Tickets)
 				.HasForeignKey(d => d.AreaId)
 				.HasConstraintName("FK_Tickets_Areas");
+
+			entity.HasOne(d => d.Order).WithMany(p => p.Tickets)
+				.HasForeignKey(d => d.OrderId)
+				.OnDelete(DeleteBehavior.ClientSetNull)
+				.HasConstraintName("FK_Tickets_Orders");
+			entity.Property(e => e.IsTransfered).HasDefaultValue(false);
+			entity.Property(e => e.IsSold).HasDefaultValue(false);
+
 		});
 
 		modelBuilder.Entity<User>(entity =>
@@ -142,6 +179,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 			entity.Property(e => e.LineId)
 				.HasMaxLength(100)
 				.HasColumnName("LineID");
+
 		});
 
 		OnModelCreatingPartial(modelBuilder);

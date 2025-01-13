@@ -7,11 +7,13 @@ namespace Spotix.Utilities.Models.EFModels;
 
 public partial class Place
 {
-    public int Id { get; set; }
+	public int Id { get; set; }
 
-    public string Name { get; set; }
+	public string Name { get; set; }
 
-    public int DisplayOrder { get; set; }
+	public int DisplayOrder { get; set; }
 
-    public virtual ICollection<Event> Events { get; set; } = new List<Event>();
+	public bool Enabled { get; set; }
+
+	public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 }

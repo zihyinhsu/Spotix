@@ -47,6 +47,22 @@ namespace Spotix.API.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "d7bece5e-cba2-4f5a-a158-2f56919bd43d",
+                            ConcurrencyStamp = "d7bece5e-cba2-4f5a-a158-2f56919bd43d",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "25935620-161c-4c2f-8936-fe88436ad02c",
+                            ConcurrencyStamp = "25935620-161c-4c2f-8936-fe88436ad02c",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -163,13 +179,13 @@ namespace Spotix.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DisplayOrder")
+                    b.Property<int?>("DisplayOrder")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
@@ -195,21 +211,22 @@ namespace Spotix.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
+                    b.Property<string>("CoverUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Host")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<byte[]>("ImgUrl")
+                    b.Property<string>("ImgUrl")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("Info")
+                    b.Property<string>("Info")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -219,11 +236,33 @@ namespace Spotix.API.Migrations
                     b.Property<int>("PlaceId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Published")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.HasKey("Id");
 
                     b.HasIndex("PlaceId");
 
+                    b.HasIndex(new[] { "Name" }, "IX_Events")
+                        .IsUnique();
+
                     b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("Spotix.Utilities.Models.EFModels.Image", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("Spotix.Utilities.Models.EFModels.Order", b =>
@@ -237,21 +276,17 @@ namespace Spotix.API.Migrations
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Number")
+                    b.Property<string>("OrderNumber")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("Payment")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<int>("Total")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -259,29 +294,6 @@ namespace Spotix.API.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("Spotix.Utilities.Models.EFModels.OrderTicket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TicketId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("TicketId");
-
-                    b.ToTable("OrderTickets");
                 });
 
             modelBuilder.Entity("Spotix.Utilities.Models.EFModels.Place", b =>
@@ -294,6 +306,11 @@ namespace Spotix.API.Migrations
 
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Enabled")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -316,22 +333,21 @@ namespace Spotix.API.Migrations
                     b.Property<DateTime>("AvailableTime")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("PublishTime")
                         .HasColumnType("datetime");
 
                     b.Property<bool>("Published")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<DateTime>("SessionTime")
                         .HasColumnType("datetime");
@@ -339,6 +355,9 @@ namespace Spotix.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EventId");
+
+                    b.HasIndex(new[] { "Name" }, "IX_Sessions")
+                        .IsUnique();
 
                     b.ToTable("Sessions");
                 });
@@ -354,34 +373,44 @@ namespace Spotix.API.Migrations
                     b.Property<int>("AreaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsSold")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("IsTransfered")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
-                    b.Property<string>("Number")
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RecieverId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("RowNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SeatNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SessionName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TicketNumber")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("Reciever")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("SeatNumber")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("SeatSelection")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AreaId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Tickets");
                 });
@@ -398,8 +427,11 @@ namespace Spotix.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<byte[]>("AvatarUrl")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("AvatarUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Birthday")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -443,6 +475,9 @@ namespace Spotix.API.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.PrimitiveCollection<string>("Roles")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -464,6 +499,33 @@ namespace Spotix.API.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Spotix.Utilities.Models.OrderCache", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(449)
+                        .HasColumnType("nvarchar(449)");
+
+                    b.Property<DateTimeOffset?>("AbsoluteExpiration")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("ExpiresAtTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("SlidingExpirationInSeconds")
+                        .HasColumnType("bigint");
+
+                    b.Property<byte[]>("Value")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpiresAtTime")
+                        .HasDatabaseName("Index_ExpiresAtTime");
+
+                    b.ToTable("OrderCache", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -550,26 +612,6 @@ namespace Spotix.API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Spotix.Utilities.Models.EFModels.OrderTicket", b =>
-                {
-                    b.HasOne("Spotix.Utilities.Models.EFModels.Order", "Order")
-                        .WithMany("OrderTickets")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_OrderTickets_Orders");
-
-                    b.HasOne("Spotix.Utilities.Models.EFModels.Ticket", "Ticket")
-                        .WithMany("OrderTickets")
-                        .HasForeignKey("TicketId")
-                        .IsRequired()
-                        .HasConstraintName("FK_OrderTickets_Tickets");
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Ticket");
-                });
-
             modelBuilder.Entity("Spotix.Utilities.Models.EFModels.Session", b =>
                 {
                     b.HasOne("Spotix.Utilities.Models.EFModels.Event", "Event")
@@ -591,7 +633,14 @@ namespace Spotix.API.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Tickets_Areas");
 
+                    b.HasOne("Spotix.Utilities.Models.EFModels.Order", "Order")
+                        .WithMany("Tickets")
+                        .HasForeignKey("OrderId")
+                        .HasConstraintName("FK_Tickets_Orders");
+
                     b.Navigation("Area");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Spotix.Utilities.Models.EFModels.Area", b =>
@@ -606,7 +655,7 @@ namespace Spotix.API.Migrations
 
             modelBuilder.Entity("Spotix.Utilities.Models.EFModels.Order", b =>
                 {
-                    b.Navigation("OrderTickets");
+                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("Spotix.Utilities.Models.EFModels.Place", b =>
@@ -617,11 +666,6 @@ namespace Spotix.API.Migrations
             modelBuilder.Entity("Spotix.Utilities.Models.EFModels.Session", b =>
                 {
                     b.Navigation("Areas");
-                });
-
-            modelBuilder.Entity("Spotix.Utilities.Models.EFModels.Ticket", b =>
-                {
-                    b.Navigation("OrderTickets");
                 });
 
             modelBuilder.Entity("Spotix.Utilities.Models.EFModels.User", b =>

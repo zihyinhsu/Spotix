@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spotix.Utilities.Models.Dtos
+namespace Spotix.Utilities.Models.DTOs
 {
 	public class LoginResponseDto
 	{

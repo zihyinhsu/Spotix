@@ -7,25 +7,26 @@ namespace Spotix.Utilities.Models.EFModels;
 
 public partial class Ticket
 {
-    public int Id { get; set; }
+	public int Id { get; set; }
 
-    public int AreaId { get; set; }
+	public int AreaId { get; set; }
 
-    public int SeatNumber { get; set; }
+	public int RowNumber { get; set; }
 
-    public bool SeatSelection { get; set; }
+	public int SeatNumber { get; set; }
 
-    public string Number { get; set; }
+	public string TicketNumber { get; set; }
+	public string SessionName { get; set; }
 
-    public bool IsSold { get; set; }
+	public bool IsSold { get; set; }
 
-    public bool IsTransfered { get; set; }
+	public bool IsTransfered { get; set; }
 
-    public string Reciever { get; set; }
+	public string RecieverId { get; set; }
 
-    public int DisplayOrder { get; set; }
+	public int? OrderId { get; set; }
 
-    public virtual Area Area { get; set; }
+	public virtual Area Area { get; set; }
 
-    public virtual ICollection<OrderTicket> OrderTickets { get; set; } = new List<OrderTicket>();
+	public virtual Order Order { get; set; }
 }
