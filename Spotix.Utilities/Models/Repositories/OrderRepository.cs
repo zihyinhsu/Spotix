@@ -38,11 +38,17 @@ namespace Spotix.Utilities.Models.Repositories
 		{
 			return await dbContext.Orders.Include(x => x.Tickets).FirstOrDefaultAsync(x => x.Id == id);
 		}
+		
+		public async Task<Order?> GetByOrderNumberAsync(string OrderNumber)
+		{
+			return await dbContext.Orders.Include(x => x.Tickets).FirstOrDefaultAsync(x => x.OrderNumber == OrderNumber);
+		}
 
 		public async Task<List<Order>> GetByUserIdAsync(string userId)
 		{
-			return await dbContext.Orders.Where(x => x.UserId == userId).ToListAsync();
+			return await dbContext.Orders.Include(x => x.Tickets).Where(x => x.UserId == userId).ToListAsync();
 		}
+		
 
 		public Task<Order?> UpdateAsync(int id, Order model)
 		{

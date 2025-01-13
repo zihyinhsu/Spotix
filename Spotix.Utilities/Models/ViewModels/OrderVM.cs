@@ -13,10 +13,9 @@ namespace Spotix.Utilities.Models.ViewModels
 
 		public int Total { get; set; }
 
-		public string Payment { get; set; }
+		public string ItemDesc { get; set; }
 
-		public string UserId { get; set; }
+		public string TicketIds { get; set; }
 
-		public string OrderNumber { get; set; }
 	}
 }

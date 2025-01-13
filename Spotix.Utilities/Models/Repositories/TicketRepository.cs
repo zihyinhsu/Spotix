@@ -38,6 +38,24 @@ namespace Spotix.Utilities.Models.Repositories
 			throw new NotImplementedException();
 		}
 
+		public async Task<List<Ticket>> UpdateByIdsAsync(IEnumerable<int> ids ,int orderId)
+		{
+			// 取得相應的 Ticket 資料
+			var tickets = await dbContext.Tickets.Where(t => ids.Contains(t.Id)).ToListAsync();
+
+			// 更新多筆資料
+			foreach (var ticket in tickets)
+			{
+				ticket.OrderId = orderId;
+				ticket.IsSold = true;
+			}
+
+			// 保存變更
+			await dbContext.SaveChangesAsync();
+
+			return tickets;
+		}
+
 		public Task<Ticket?> UpdateAsync(int id, Ticket model)
 		{
 			throw new NotImplementedException();

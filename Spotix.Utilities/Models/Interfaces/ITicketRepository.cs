@@ -11,6 +11,7 @@ namespace Spotix.Utilities.Models.Interfaces
 	{
 		Task<List<Ticket>> GetAllAsync();
 		Task<Ticket?> GetByIdAsync(int id);
+		Task<List<Ticket>> UpdateByIdsAsync(IEnumerable<int> ids, int orderId);
 		Task CreateAsync(List<Ticket> model);
 		Task<Ticket?> UpdateAsync(int id, Ticket model);
 		Task<Ticket?> DeleteAsync(int id);

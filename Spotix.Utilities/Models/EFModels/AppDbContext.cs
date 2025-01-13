@@ -90,9 +90,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 				.IsRequired()
 				.HasMaxLength(50)
 				.IsUnicode(false);
-			entity.Property(e => e.Payment)
-				.IsRequired()
-				.HasMaxLength(50);
+	
 			entity.Property(e => e.UserId).HasMaxLength(450);
 
 			entity.HasOne(d => d.User).WithMany(p => p.Orders)
