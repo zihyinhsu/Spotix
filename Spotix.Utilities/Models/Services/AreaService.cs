@@ -16,11 +16,14 @@ namespace Spotix.Utilities.Models.Services
 	{
 		private readonly IAreaRepository areaRepository;
 		private readonly ITicketRepository ticketRepository;
+		private readonly ISessionRepository sessionRepository;
 
-		public AreaService(IAreaRepository areaRepository, ITicketRepository ticketRepository)
+
+		public AreaService(IAreaRepository areaRepository, ITicketRepository ticketRepository, ISessionRepository sessionRepository)
 		{
 			this.areaRepository = areaRepository;
 			this.ticketRepository = ticketRepository;
+			this.sessionRepository = sessionRepository;
 		}
 
 
@@ -42,35 +45,42 @@ namespace Spotix.Utilities.Models.Services
 			// 建立 area
 			areaModel = await areaRepository.CreateAsync(areaModel);
 
-			// 依照 area 的 qty 建立 tickets
-			var qty = areaModel.Qty;
-			var columns = 12;
-			var tickets = new List<Ticket>();
-			int rowNumber = 1;
-			int seatNumber = 1;
+			if (areaModel.SessionId != null) {
+				// 找session
+				var session = await sessionRepository.GetByIdAsync(areaModel.SessionId);
 
-			for (int i = 1; i <= qty; i++)
-			{
-				tickets.Add(new Ticket
+				// 依照 area 的 qty 建立 tickets
+				var qty = areaModel.Qty;
+				var columns = 12;
+				var tickets = new List<Ticket>();
+				int rowNumber = 1;
+				int seatNumber = 1;
+
+				for (int i = 1; i <= qty; i++)
 				{
-					AreaId = areaModel.Id,
-					RowNumber = rowNumber,
-					SeatNumber = seatNumber,
-					TicketNumber = Guid.NewGuid().ToString(),
-					IsSold = false,
-					IsTransfered = false,
-				});
+					tickets.Add(new Ticket
+					{
+						AreaId = areaModel.Id,
+						RowNumber = rowNumber,
+						SeatNumber = seatNumber,
+						TicketNumber = Guid.NewGuid().ToString(),
+						IsSold = false,
+						IsTransfered = false,
+						SessionName = session.Name
+					});
 
-				seatNumber++;
+					seatNumber++;
 
-				if (seatNumber > columns)
-				{
-					seatNumber = 1;
-					rowNumber++;
+					if (seatNumber > columns)
+					{
+						seatNumber = 1;
+						rowNumber++;
+					}
 				}
-			}
 
-			await ticketRepository.CreateAsync(tickets);
+				await ticketRepository.CreateAsync(tickets);
+			}
+			
 			return areaModel;
 		}
 	}

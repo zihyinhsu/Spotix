@@ -12,6 +12,7 @@ namespace Spotix.Utilities.Models.Interfaces
 		Task<List<Order>> GetAllAsync();
 		Task<Order?> GetByIdAsync(int id);
 		Task<List<Order>> GetByUserIdAsync(string userId);
+		public Task<Order?> GetByOrderNumberAsync(string OrderNumber);
 		Task<Order> CreateAsync(Order model);
 		Task<Order?> UpdateAsync(int id, Order model);
 		Task<Order?> DeleteAsync(int id);

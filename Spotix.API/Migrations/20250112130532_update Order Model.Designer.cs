@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Spotix.Utilities.Models.EFModels;
 
@@ -11,9 +12,11 @@ using Spotix.Utilities.Models.EFModels;
 namespace Spotix.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250112130532_update Order Model")]
+    partial class updateOrderModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -338,8 +341,8 @@ namespace Spotix.API.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("PublishTime")
                         .HasColumnType("datetime");
@@ -395,10 +398,6 @@ namespace Spotix.API.Migrations
 
                     b.Property<int>("SeatNumber")
                         .HasColumnType("int");
-
-                    b.Property<string>("SessionName")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("TicketNumber")
                         .IsRequired()
@@ -499,33 +498,6 @@ namespace Spotix.API.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Spotix.Utilities.Models.OrderCache", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(449)
-                        .HasColumnType("nvarchar(449)");
-
-                    b.Property<DateTimeOffset?>("AbsoluteExpiration")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("ExpiresAtTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<long?>("SlidingExpirationInSeconds")
-                        .HasColumnType("bigint");
-
-                    b.Property<byte[]>("Value")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExpiresAtTime")
-                        .HasDatabaseName("Index_ExpiresAtTime");
-
-                    b.ToTable("OrderCache", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
