@@ -46,6 +46,34 @@ public partial class AppDbContext : IdentityDbContext<User>
 
 		modelBuilder.Entity<IdentityRole>().HasData(roles);
 
+		  // 配置 OrderCache 資料表
+  modelBuilder.Entity<OrderCache>(entity =>
+  {
+      entity.ToTable("OrderCache");
+
+      entity.HasKey(e => e.Id);
+
+      entity.Property(e => e.Id)
+          .IsRequired()
+          .HasMaxLength(449);
+
+      entity.Property(e => e.Value)
+          .IsRequired();
+
+      entity.Property(e => e.ExpiresAtTime)
+          .IsRequired();
+
+      entity.Property(e => e.SlidingExpirationInSeconds)
+          .IsRequired(false);
+
+      entity.Property(e => e.AbsoluteExpiration)
+          .IsRequired(false);
+
+      entity.HasIndex(e => e.ExpiresAtTime)
+          .HasDatabaseName("Index_ExpiresAtTime")
+          .IsUnique(false);
+  });
+
 		modelBuilder.Entity<Area>(entity =>
 		{
 			entity.Property(e => e.Name)
@@ -113,7 +141,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 			entity.Property(e => e.AvailableTime).HasColumnType("datetime");
 			entity.Property(e => e.Name)
 				.IsRequired()
-				.HasMaxLength(50);
+				.HasMaxLength(100);
 			entity.Property(e => e.PublishTime).HasColumnType("datetime");
 			entity.Property(e => e.Published).HasDefaultValue(true);
 			entity.Property(e => e.SessionTime).HasColumnType("datetime");
@@ -130,6 +158,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 				.HasMaxLength(50)
 				.IsUnicode(false);
 			entity.Property(e => e.RecieverId).HasMaxLength(100);
+			entity.Property(e => e.SessionName).HasMaxLength(100); 
 
 			entity.HasOne(d => d.Area).WithMany(p => p.Tickets)
 				.HasForeignKey(d => d.AreaId)

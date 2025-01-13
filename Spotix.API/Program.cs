@@ -56,7 +56,12 @@ builder.Services.AddSwaggerGen(options =>
 	});
 });
 
-
+// Add services to the container.
+//builder.Services.AddControllers()
+//	.AddJsonOptions(options =>
+//	{
+//		options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+//	});
 
 // ³]©w CORS
 builder.Services.AddCors(options =>

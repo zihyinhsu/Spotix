@@ -16,6 +16,7 @@ public partial class Ticket
 	public int SeatNumber { get; set; }
 
 	public string TicketNumber { get; set; }
+	public string SessionName { get; set; }
 
 	public bool IsSold { get; set; }
 
