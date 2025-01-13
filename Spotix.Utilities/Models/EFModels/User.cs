@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Spotix.Utilities.Models.EFModels;
 
-public partial class User : IdentityUser
+public partial class User: IdentityUser
 {
     public string LineId { get; set; }
 

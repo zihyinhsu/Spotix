@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Spotix.Utilities\Spotix.Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\User\" />
+  </ItemGroup>
+
 </Project>
