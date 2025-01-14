@@ -27,9 +27,14 @@
                 <span asp-validation-for="SessionId" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Qty" class="control-label"></label>
-                <input asp-for="Qty" class="form-control" />
-                <span asp-validation-for="Qty" class="text-danger"></span>
+                <label asp-for="Qty" class="control-label">數量(無法修改)</label>
+                <div class="mb-3" style="background-color: white; border: 1px solid lightgray; padding: 10px;">
+                    @Html.DisplayFor(model => model.Qty)
+                </div>
+                @* <input asp-for="Qty" class="form-control" /> *@
+                @* <span asp-validation-for="Qty" class="text-danger"></span> *@
+                @* <input asp-for="Qty" class="form-control" /> *@
+                @* <span asp-validation-for="Qty" class="text-danger"></span> *@
             </div>
             <div class="mb-3">
                 <label asp-for="DisplayOrder" class="control-label"></label>
