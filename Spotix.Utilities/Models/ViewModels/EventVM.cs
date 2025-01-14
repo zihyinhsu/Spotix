@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,9 @@ namespace Spotix.Utilities.Models.ViewModels
 
 		[Display(Name = "活動開演時間")]
 		public DateTime? FirstSessionTime { get; set; } = null;
+
+		[Display(Name = "活動場次")]
+		public string? SessionName{ get; set; } = null;
 
 	}
 }

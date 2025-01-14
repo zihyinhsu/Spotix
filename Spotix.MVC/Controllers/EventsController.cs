@@ -28,32 +28,21 @@ namespace Spotix.MVC.Controllers
 		public async Task<IActionResult> Index(
 			string sortOrder,
 			string currentFilterEvent,
-			DateTime currentFilterBefore,
-			DateTime currentFilterAfter,
-			//改為Date >>>
+			DateOnly? currentFilterBefore,
+			DateOnly? currentFilterAfter,
 			string searchStringEvent,
-			DateTime? searchTimeBefore,
-			DateTime? searchTimeAfter,
+			DateOnly? searchTimeBefore,
+			DateOnly? searchTimeAfter,
 			int? goToPageNumber,
 			int pageSize,
 			int? pageNumber)
 		{
+			//var queryTwo = _context.Sessions.AsNoTracking().Include(s => s.Event).OrderBy(item => item.SessionTime).FirstOrDefault();
 
-			//if (searchTimeBefore == null || searchTimeBefore == DateTime.MinValue)
-			//{
-			//	searchTimeBefore = DateTime.Now; // 或者設置為其他合理的預設值
-			//}
-			//if (searchTimeAfter == null || searchTimeAfter == DateTime.MinValue)
-			//{
-			//	searchTimeAfter = DateTime.Now; // 或者設置為其他合理的預設值
-			//}
-
-
-			//搜尋邏輯:
 			var query = from e in _context.Events
-						join p in _context.Places on e.PlaceId equals p.Id  //inner join
+						join p in _context.Places on e.PlaceId equals p.Id
 						join s in _context.Sessions on e.Id equals s.EventId into result1
-						from es in result1.DefaultIfEmpty()     //left join
+						from es in result1.OrderBy(s => s.SessionTime).Take(1).DefaultIfEmpty()
 						select new EventVM
 						{
 							Id = e.Id,
@@ -61,16 +50,44 @@ namespace Spotix.MVC.Controllers
 							Info = e.Info,
 							CoverUrl = e.CoverUrl,
 							ImgUrl = e.ImgUrl,
-							PlaceName = p.Name, //這裡將Place的Name取出來
-												//FirstSessionTime = es != null ? ((IEnumerable<Session>)result1).DefaultIfEmpty().OrderBy(st => st.SessionTime).Select(st => st.SessionTime).FirstOrDefault() : (DateTime?)null, //這裡將Session的最小sessionTime取出來	//沒有sessionTime的event也會找出來
-												//FirstSessionTime= result1.OrderBy(st => st.SessionTime).Select(st => (DateTime?)st.SessionTime).FirstOrDefault(),
-							FirstSessionTime = es.SessionTime, //這裡將Session的sessionTime取出來	//沒有ssessionTime的event也會找出來 //改為只找出第一筆 >>>
+							FirstSessionTime = es != null ? es.SessionTime : (DateTime?)null,
+							//SessionName = es != null ? es.Name : null,
+							PlaceName = p.Name,
 							PlaceId = p.Id,
 							Host = e.Host,
 							Published = e.Published,
 						};
 
-			//條件過濾:
+			//// 將查詢結果載入到記憶體中
+			//var eventList = await query.ToListAsync();
+
+			//var query = eventList
+			//					.GroupBy(e => e.Name)
+			//					.Select(g => g.OrderBy(e => e.FirstSessionTime).FirstOrDefault())
+			//					.Where(e => e != null) // 過濾掉 null 值
+			//					.Cast<EventVM>() // 確保類型為 EventVM
+			//					.AsQueryable(); // 再次轉換為 IQueryable 以便後續操作
+
+
+			//// 將查詢結果載入到記憶體中
+			//var eventList = await query.ToListAsync();
+
+			//var query = eventList
+			//					.GroupBy(e => e.Name)
+			//					.Select(g => g.OrderBy(e => e.FirstSessionTime).First())
+			//					.AsQueryable();														// 再次轉換為 IQueryable 以便後續操作
+
+			//// 將查詢結果載入到記憶體中
+			//var query = query
+			//					.AsEnumerable() // 將查詢轉換為在客戶端進行評估
+			//					.GroupBy(e => e.Name)
+			//					.Select(g => g.OrderBy(e => e.FirstSessionTime).FirstOrDefault())
+			//					.AsQueryable(); // 再次轉換為 IQueryable 以便後續操作
+
+			//var query = query
+			//					.GroupBy(e => e.SessionName)
+			//					.Select(g => g.OrderBy(e => e.FirstSessionTime).FirstOrDefault());
+
 			if (searchStringEvent != null || searchTimeBefore.HasValue || searchTimeAfter.HasValue)
 			{
 				pageNumber = 1;
@@ -78,32 +95,42 @@ namespace Spotix.MVC.Controllers
 			else
 			{
 				searchStringEvent = currentFilterEvent;
-				searchTimeBefore = currentFilterBefore != DateTime.MinValue ? currentFilterBefore : (DateTime?)null;
-				searchTimeAfter = currentFilterAfter != DateTime.MinValue ? currentFilterAfter : (DateTime?)null;
+				searchTimeBefore = currentFilterBefore;
+				searchTimeAfter = currentFilterAfter;
 			}
+
 			ViewData["CurrentFilterEvent"] = searchStringEvent;
-			ViewData["CurrentFilterBefore"] = searchTimeBefore;
-			ViewData["CurrentFilterAfter"] = searchTimeAfter;
+			ViewData["CurrentFilterBefore"] = currentFilterBefore;
+			ViewData["CurrentFilterAfter"] = currentFilterAfter;
 
 			if (!string.IsNullOrEmpty(searchStringEvent))
 			{
 				query = query.Where(e => e.Name.Contains(searchStringEvent));
 			}
-			if (searchTimeBefore.HasValue || searchTimeAfter.HasValue)
+
+			if (searchTimeBefore.HasValue)
 			{
-				query = query.Where(e => e.FirstSessionTime <= searchTimeAfter && e.FirstSessionTime >= searchTimeBefore);   //
+				query = query.Where(e => DateOnly.FromDateTime(e.FirstSessionTime.Value) >= searchTimeBefore.Value);
 			}
 
+			if (searchTimeAfter.HasValue)
+			{
+				query = query.Where(e => DateOnly.FromDateTime(e.FirstSessionTime.Value) <= searchTimeAfter.Value);
+			}
 
-			//排序邏輼:
+			// 分組並取每組的第一個
+			//query = query
+			//	.GroupBy(e => e.Name)
+			//	.Select(g => g.OrderBy(e => e.FirstSessionTime).FirstOrDefault());
+
 			ViewData["CurrentSort"] = sortOrder;
 
 			switch (sortOrder)
 			{
 				case "1":
-					query = query.OrderBy(e => e.FirstSessionTime); break;
-				case "2":
 					query = query.OrderByDescending(e => e.FirstSessionTime); break;
+				case "2":
+					query = query.OrderBy(e => e.FirstSessionTime); break;
 				case "3":
 					query = query.OrderByDescending(e => e.Published); break;
 				case "4":
@@ -112,7 +139,6 @@ namespace Spotix.MVC.Controllers
 					query = query.OrderByDescending(e => e.FirstSessionTime); break;
 			}
 
-			//分頁邏輯:
 			if (!string.IsNullOrEmpty(searchStringEvent) && (searchTimeBefore.HasValue || searchTimeAfter.HasValue) && goToPageNumber != null)
 			{
 				pageNumber = 1;
@@ -122,16 +148,13 @@ namespace Spotix.MVC.Controllers
 				pageNumber = goToPageNumber;
 			}
 
-			//每頁顯示幾筆資料
 			if (pageSize == 0)
 			{
 				pageSize = 10;
 			}
 			ViewData["pageSize"] = pageSize;
-			//返回結果
+
 			return View(await PaginatedList<EventVM>.CreateAsyncP(query.AsNoTracking(), pageNumber ?? 1, pageSize));
-
-
 		}
 
 		public IActionResult Create()
@@ -354,6 +377,11 @@ namespace Spotix.MVC.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
+		private DateTime? GetFirstSessionTime(IEnumerable<Session> sessions)
+		{
+			var firstSession = sessions.OrderBy(s => s.SessionTime).FirstOrDefault();
+			return firstSession?.SessionTime.Date;
+		}
 
 
 

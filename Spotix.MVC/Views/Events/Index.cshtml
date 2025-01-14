@@ -42,10 +42,10 @@
                 <div class="form-group">
                     <select class="form-control" name="sortOrder" onchange="this.form.submit()">
                         <option value="0" selected="@((string)ViewData["CurrentSort"] == "0" )">預設排序</option>
-                        <option value="1" selected="@((string)ViewData["CurrentSort"] == "1" )">活動開演時間_升序 </option>
-                        <option value="2" selected="@((string)ViewData["CurrentSort"] == "2" )">活動開演時間_降序</option>
-                        <option value="3" selected="@((string)ViewData["CurrentSort"] == "3" )">上架 → 下架</option>
-                        <option value="4" selected="@((string)ViewData["CurrentSort"] == "4" )">下架 → 上架</option>
+                    <option value="1" selected="@((string)ViewData["CurrentSort"] == "1" )">活動開演時間 ↓ </option>
+                    <option value="2" selected="@((string)ViewData["CurrentSort"] == "2" )">活動開演時間 ↑</option>
+                    <option value="3" selected="@((string)ViewData["CurrentSort"] == "3" )">上下架 ↓</option>
+                    <option value="4" selected="@((string)ViewData["CurrentSort"] == "4" )">上下架 ↑</option>
                     </select>
                 </div>
             </div>
@@ -91,11 +91,12 @@
                                 @Html.DisplayFor(modelItem => item.Published)
                             </td>
                             <td>
-                                @{
-                                    string firstSessionTimeDisplay = item.FirstSessionTime != null ? Convert.ToDateTime(item.FirstSessionTime).ToString("yyyy/MM/dd tt hh:mm") : string.Empty;
-                                }
-                                @firstSessionTimeDisplay
-                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstSessionTime)
+                                @* @if (item.FirstSessionTime != null) *@
+                                @* { *@
+                                @*     @Convert.ToDateTime(item.FirstSessionTime).ToString("yyyy/MM/dd") *@
+                                @* } *@
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                                 @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) | *@
@@ -168,8 +169,8 @@
     <script type="text/javascript">
         function clearSearch() {
             $('#input_Name').val('')
-            $('#input_FirstSessionTime_Before').val('')
-            $('#input_FirstSessionTime_After').val('')
+            $('#input_FirstSessionTime_Before').val('');
+            $('#input_FirstSessionTime_After').val('');
             $('#form_search').submit()
         }
         function goToPage() {
