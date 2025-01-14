@@ -28,6 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Spotix.Utilities\Spotix.Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Spotix.Utilities">
       <HintPath>..\Spotix.Utilities\bin\Debug\net8.0\Spotix.Utilities.dll</HintPath>
     </Reference>
