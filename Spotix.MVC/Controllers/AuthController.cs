@@ -40,7 +40,13 @@ namespace Spotix.MVC.Controllers
 			{
 				UserName = model.UserName,
 				Email = model.Email,
-				Gender = model.Gender
+				Gender = model.Gender,
+				Birthday = model.Birthday,
+				Address = model.Address,
+				PhoneNumber = model.PhoneNumber,
+
+
+
 			};
 
 			var identityResult = await userManager.CreateAsync(user, model.Password);
@@ -56,11 +62,26 @@ namespace Spotix.MVC.Controllers
 						TempData["message"] = "註冊成功! 請登入帳號";
 						return RedirectToAction("Login");
 					}
+					else
+					{
+						var errors = string.Join(", ", identityResult.Errors.Select(e => e.Description));
+						throw new ArgumentException($"{errors}, 請聯繫系統管理員");
+						//return View();
+					}
 				}
 			}
-			//var errors = identityResult.Errors.Select(e => e.Description).ToArray()[1];
+			else
+			{
+				var errors = identityResult.Errors.Select(e => e.Description).ToArray();
+				
+				//string.Join: 這個方法會將 errors 中的每個錯誤訊息用逗號和空格（, ）連接起來，形成一個單一的字串。
+				//errorMessage: 最後，合併後的錯誤訊息會被存儲在這個變數中
+				var errorMessage = string.Join(", ", errors);
+				throw new ArgumentException($"註冊失敗: {errorMessage}");
+			}
+			
 			return View();
-			//throw new ArgumentException($"{errors}, 請聯繫系統管理員");
+	
 		}
 
 		public ActionResult Logout()

@@ -45,13 +45,16 @@
                 <div class="form-group">
                     <select class="form-control" name="sortOrder" onchange="this.form.submit()">
                         <option value="0" selected="@((string)ViewData["CurrentSort"] == "0" )">預設排序</option>
-                        <option value="1" selected="@((string)ViewData["CurrentSort"] == "1" )">開演時間 遠→近</option>
-                        <option value="2" selected="@((string)ViewData["CurrentSort"] == "2" )">開賣時間 遠→近</option>
-                        <option value="3" selected="@((string)ViewData["CurrentSort"] == "3" )">上架時間 遠→近</option>
+                    <option value="1" selected="@((string)ViewData["CurrentSort"] == "1" )">開演時間 ↓</option>
+                    <option value="2" selected="@((string)ViewData["CurrentSort"] == "2" )">開賣時間 ↓</option>
+                    <option value="3" selected="@((string)ViewData["CurrentSort"] == "3" )">上架時間 ↓</option>
                     </select>
                 </div>
             </div>
         </div>
+    <p>
+        <a asp-action="Create">新增一筆</a>
+    </p>
         <div class="table-responsive">
 
             <table class="table table-bordered">
@@ -100,6 +103,11 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.EventName)
                         </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                            @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) | *@
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                        </td>
                       
                     </tr>
                     }
@@ -117,8 +125,8 @@
             <div class="mx-auto">
                 每頁
                 <select class="custom-select" name="pageSize" onchange="changePageSize()">
-                    @*
-                        <option value="5" selected="@((int)ViewData[" pageSize"]= =5)">5</option> *@
+                    
+                    <option value="5" selected="@((int)ViewData["pageSize"]==5)">5</option> 
                     <option value="10" selected="@((int)ViewData["pageSize"]==10)">10</option>
                     <option value="30" selected="@((int)ViewData["pageSize"]==30)">30</option>
                     <option value="50" selected="@((int)ViewData["pageSize"]==50)">50</option>
@@ -126,8 +134,8 @@
                 <a asp-action="Index" 
                     asp-route-sortOrder="@ViewData["CurrentSort"]" 
                    asp-route-pageNumber="@(Model.PageIndex - 1)" 
-                  asp-route-currentFilterNumber="@ViewData["CurrentFilterSession"]" 
-                   asp-route-CurrentFilterCustomer="@ViewData["CurrentFilterEvent"]" 
+                  asp-route-currentFilterSession="@ViewData["CurrentFilterSession"]" 
+                   asp-route-CurrentFilterEvent="@ViewData["CurrentFilterEvent"]" 
                     asp-route-pageSize="@ViewData["PageSize"]" 
                    class="btn btn-outline-secondary btn-sm @prevDisabled"> 
                    上一頁 
@@ -144,6 +152,7 @@
                     }
                 </select>
                 頁｜
+
                  <a asp-action="Index" 
                   asp-route-sortOrder="@ViewData["CurrentSort"]" 
                    asp-route-pageNumber="@(Model.PageIndex + 1)" 
@@ -159,8 +168,73 @@
     </div>
 </form>
 
+
+<p>
+    <a asp-action="Create">新增一筆</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th> 
+                @Html.DisplayNameFor(model => model[0].Id)
+            </th> 
+            <th>
+                @Html.DisplayNameFor(model => model[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].SessionTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].AvailableTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].PublishTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Published)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].EventName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SessionTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailableTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublishTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Published)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |  *@
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
 @section Scripts
- {
+{
     <script type="text/javascript">
         function clearSearch() {
             $('#input_Name').val('')

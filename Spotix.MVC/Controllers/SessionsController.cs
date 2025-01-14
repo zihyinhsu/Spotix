@@ -61,7 +61,7 @@ namespace Spotix.MVC.Controllers
 			ViewData["CurrentFilterSession"] = searchStringSession;
 
 			if (!string.IsNullOrEmpty(searchStringEvent))
-			{
+			{	
 				query = query.Where(e => e.EventName.Contains(searchStringEvent));
 			}
 			if (!string.IsNullOrEmpty(searchStringSession))
@@ -179,6 +179,7 @@ namespace Spotix.MVC.Controllers
 				return NotFound();
 			}
 			var session = await _context.Sessions
+				.Include(s => s.Event)
 				.FirstOrDefaultAsync(m => m.Id == id);
 			if (session == null)
 			{
