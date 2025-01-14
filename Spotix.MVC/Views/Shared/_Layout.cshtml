@@ -91,7 +91,8 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         @* <h6 class="collapse-header">Custom Utilities:</h6> *@
                         @{
-                            if (User.Identity.IsAuthenticated) { 
+                            if (User.Identity.IsAuthenticated) 
+                            {
                                 <a class="collapse-item" href="~/Place/Index">場地</a>
                                 <a class="collapse-item" href="~/Sessions/Index">場次</a>
                             }
@@ -213,9 +214,9 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="~/Auth/EditProfile">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    個人資料
+                                    修改個人資料
                                 </a>
                                 // <a class="dropdown-item" href="#">
                                 //     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>

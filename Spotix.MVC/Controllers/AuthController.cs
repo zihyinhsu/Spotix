@@ -120,6 +120,61 @@ namespace Spotix.MVC.Controllers
 			return Redirect(returnUrl);
 		}
 
-		
-	}
+        // 顯示修改個人資料的頁面
+        [HttpGet]
+        public async Task<IActionResult> EditProfile(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            var model = new EditProfileVM
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Gender = user.Gender,
+                Birthday = user.Birthday,
+                Address = user.Address,
+                AvatarUrl = user.AvatarUrl
+            };
+
+            return View(model);
+        }
+
+        // 處理修改個人資料表單提交
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(EditProfileVM model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await userManager.FindByIdAsync(model.Id);
+            if (user == null) return NotFound();
+
+            user.UserName = model.UserName;
+            user.Email = model.Email;
+            user.Gender = model.Gender;
+            user.Birthday = model.Birthday;
+            user.Address = model.Address;
+
+            if (!string.IsNullOrEmpty(model.AvatarUrl))
+            {
+                user.AvatarUrl = model.AvatarUrl; // 更新頭像
+            }
+
+            var result = await userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["message"] = "個人資料已成功更新!";
+                return RedirectToAction("EditProfile", new { id = model.Id });
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(model);
+        }
+    }
 }
