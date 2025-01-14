@@ -40,7 +40,13 @@ namespace Spotix.MVC.Controllers
 			{
 				UserName = model.UserName,
 				Email = model.Email,
-				Gender = model.Gender
+				Gender = model.Gender,
+				Birthday = model.Birthday,
+				Address = model.Address,
+				PhoneNumber = model.PhoneNumber,
+
+
+
 			};
 
 			var identityResult = await userManager.CreateAsync(user, model.Password);

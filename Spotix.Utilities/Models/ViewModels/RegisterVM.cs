@@ -35,8 +35,8 @@ namespace Spotix.Utilities.Models.ViewModels
 		[DataType(DataType.Password)]
 		public string ConfirmPassword { get; set; }
 
-		[Display(Name = "LineID")]
-		public string? LineId { get; set; } = null;
+		//[Display(Name = "LineID")]
+		//public string? LineId { get; set; } = null;
 
 		[Display(Name = "性別")]
 		[Required(ErrorMessage = "請選擇您的性別")]
@@ -49,8 +49,8 @@ namespace Spotix.Utilities.Models.ViewModels
 		[Display(Name = "居住地址")]
 		public string? Address { get; set; } = null;
 
-		[Display(Name = "大頭貼")]
-		public string? AvatarUrl { get; set; } = null;
+		//[Display(Name = "大頭貼")]
+		//public string? AvatarUrl { get; set; } = null;
 
 
 		//[Required(ErrorMessage = "請選擇一個角色")]

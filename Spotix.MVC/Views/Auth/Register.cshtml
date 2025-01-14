@@ -40,11 +40,11 @@
                                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                    <label asp-for="LineId" class="form-label"></label>
-                                    <input asp-for="LineId" class="form-control form-control-user">
-                                    <span asp-validation-for="LineId" class="text-danger"></span>
-                            </div>
+                            @* <div class="form-group"> *@
+                            @*         <label asp-for="LineId" class="form-label"></label> *@
+                            @*         <input asp-for="LineId" class="form-control form-control-user"> *@
+                            @*         <span asp-validation-for="LineId" class="text-danger"></span> *@
+                            @* </div> *@
                             <div class="form-group">
                                 <label asp-for="Gender" class="form-label"></label>
                                 <div class="form-check">
@@ -77,11 +77,11 @@
                                 <input asp-for="Address" class="form-control form-control-user">
                                 <span asp-validation-for="Address" class="text-danger"></span>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="AvatarUrl" class="form-label"></label>
-                                <input asp-for="AvatarUrl" class="form-control form-control-user">
-                                <span asp-validation-for="AvatarUrl" class="text-danger"></span>
-                            </div>
+                            @* <div class="form-group"> *@
+                            @*     <label asp-for="AvatarUrl" class="form-label"></label> *@
+                            @*     <input asp-for="AvatarUrl" class="form-control form-control-user"> *@
+                            @*     <span asp-validation-for="AvatarUrl" class="text-danger"></span> *@
+                            @* </div> *@
                             <div class="form-group">
                                 <label asp-for="Roles" class="form-label"></label>
                                 <select asp-for="SelectedRole" class="form-control form-control-user" asp-items="@(new SelectList(Model.Roles))"></select>
