@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
@@ -34,8 +35,8 @@ namespace Spotix.Utilities.Models.ViewModels
 		[DataType(DataType.Password)]
 		public string ConfirmPassword { get; set; }
 
-		[Display(Name = "LineID")]
-		public string? LineId { get; set; } = null;
+		//[Display(Name = "LineID")]
+		//public string? LineId { get; set; } = null;
 
 		[Display(Name = "性別")]
 		[Required(ErrorMessage = "請選擇您的性別")]
@@ -43,13 +44,13 @@ namespace Spotix.Utilities.Models.ViewModels
 
 		[Display(Name = "生日")]
 		[Required(ErrorMessage = "{0} 為必填")]
-		public DateTime? Birthday { get; set; } = null;
+		public DateTime Birthday { get; set; }
 
 		[Display(Name = "居住地址")]
 		public string? Address { get; set; } = null;
 
-		[Display(Name = "大頭貼")]
-		public string? AvatarUrl { get; set; } = null;
+		//[Display(Name = "大頭貼")]
+		//public string? AvatarUrl { get; set; } = null;
 
 
 		//[Required(ErrorMessage = "請選擇一個角色")]
@@ -61,5 +62,6 @@ namespace Spotix.Utilities.Models.ViewModels
 		[Display(Name = "手機號碼")]
 		[Required(ErrorMessage = "{0} 為必填")]
 		public string PhoneNumber { get; set; }
+
 	}
 }
