@@ -1,0 +1,62 @@
+﻿@model Spotix.Utilities.Models.ViewModels.AreaVM
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+<h3 class="text-danger">確定要刪除這筆資料嗎?</h3>
+<div>
+    <h4 class="fw-bolder mt-5">票價、區域 : </h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SessionName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SessionName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Qty)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Qty)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DisplayOrder)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DisplayOrder)
+        </dd>
+        @* <dt class = "col-sm-2"> *@
+        @*     @Html.DisplayNameFor(model => model.PlaceId) *@
+        @* </dt> *@
+        @* <dd class = "col-sm-10"> *@
+        @*     @Html.DisplayFor(model => model.PlaceId) *@
+        @* </dd> *@
+
+        <form asp-action="Delete" class="mt-5">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="刪除" class="btn btn-outline-danger" /> |
+            <a asp-action="Index" class="btn btn-secondary">回到清單頁</a>
+        </form>
+</div>
+
+<script>
+    const info = document.getElementById("info")
+    info.innerHTML = @Html.Raw(Json.Serialize(ViewBag.Content));
+</script>
