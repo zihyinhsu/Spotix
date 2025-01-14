@@ -24,8 +24,6 @@ public partial class Ticket
 
 	public string RecieverId { get; set; }
 
-	public string SessionName { get; set; }
-
 	public int? OrderId { get; set; }
 
 	public virtual Area Area { get; set; }
