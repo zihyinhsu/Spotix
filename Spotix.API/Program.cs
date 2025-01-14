@@ -151,23 +151,24 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
+	app.UseSwaggerUI();
 	// 暫時擁有/
-	app.UseSwaggerUI(c =>
-	{
-		c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-		c.RoutePrefix = string.Empty; // 這樣 Swagger UI 就會在根 URL 上可用
-	});
-	app.UseRouting(); // Add this line
+	//app.UseSwaggerUI(c =>
+	//{
+	//	c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+	//	c.RoutePrefix = string.Empty; // 這樣 Swagger UI 就會在根 URL 上可用
+	//});
+	//app.UseRouting(); // Add this line
 
-	app.UseEndpoints(endpoints =>
-	{
-		endpoints.MapControllers();
-		// 添加這一行來處理根 URL 的請求
-		endpoints.MapGet("/", async context =>
-		{
-			context.Response.Redirect("/swagger");
-		});
-	});
+	//app.UseEndpoints(endpoints =>
+	//{
+	//	endpoints.MapControllers();
+	//	// 添加這一行來處理根 URL 的請求
+	//	endpoints.MapGet("/", async context =>
+	//	{
+	//		context.Response.Redirect("/swagger");
+	//	});
+	//});
 }
 
 
