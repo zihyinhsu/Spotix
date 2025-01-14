@@ -44,7 +44,7 @@ namespace Spotix.Utilities.Models.ViewModels
 
 		[Display(Name = "生日")]
 		[Required(ErrorMessage = "{0} 為必填")]
-		public DateTime? Birthday { get; set; } = null;
+		public DateTime Birthday { get; set; }
 
 		[Display(Name = "居住地址")]
 		public string? Address { get; set; } = null;
