@@ -39,6 +39,17 @@ namespace Spotix.MVC.Controllers
 		{
 			//var queryTwo = _context.Sessions.AsNoTracking().Include(s => s.Event).OrderBy(item => item.SessionTime).FirstOrDefault();
 
+			//if (searchTimeBefore == null || searchTimeBefore == DateTime.MinValue)
+			//{
+			//	searchTimeBefore = DateTime.Now; // 或者設置為其他合理的預設值
+			//}
+			//if (searchTimeAfter == null || searchTimeAfter == DateTime.MinValue)
+			//{
+			//	searchTimeAfter = DateTime.Now; // 或者設置為其他合理的預設值
+			//}
+
+
+			//搜尋邏輯:
 			var query = from e in _context.Events
 						join p in _context.Places on e.PlaceId equals p.Id
 						join s in _context.Sessions on e.Id equals s.EventId into result1
@@ -123,6 +134,7 @@ namespace Spotix.MVC.Controllers
 			//	.GroupBy(e => e.Name)
 			//	.Select(g => g.OrderBy(e => e.FirstSessionTime).FirstOrDefault());
 
+			//排序邏輼:
 			ViewData["CurrentSort"] = sortOrder;
 
 			switch (sortOrder)
@@ -139,6 +151,7 @@ namespace Spotix.MVC.Controllers
 					query = query.OrderByDescending(e => e.FirstSessionTime); break;
 			}
 
+			//分頁邏輯:
 			if (!string.IsNullOrEmpty(searchStringEvent) && (searchTimeBefore.HasValue || searchTimeAfter.HasValue) && goToPageNumber != null)
 			{
 				pageNumber = 1;
@@ -148,6 +161,7 @@ namespace Spotix.MVC.Controllers
 				pageNumber = goToPageNumber;
 			}
 
+			//每頁顯示幾筆資料
 			if (pageSize == 0)
 			{
 				pageSize = 10;
@@ -155,6 +169,8 @@ namespace Spotix.MVC.Controllers
 			ViewData["pageSize"] = pageSize;
 
 			return View(await PaginatedList<EventVM>.CreateAsyncP(query.AsNoTracking(), pageNumber ?? 1, pageSize));
+
+
 		}
 
 		public IActionResult Create()
