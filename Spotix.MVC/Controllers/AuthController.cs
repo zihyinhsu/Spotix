@@ -8,18 +8,17 @@ using Microsoft.AspNetCore.Identity;
 using Spotix.Utilities.Models.DTOs;
 using Spotix.Utilities.Models.Repositories;
 using Spotix.Utilities.Models.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Spotix.MVC.Controllers
 {
 	public class AuthController : Controller
 	{
 		private readonly UserManager<User> userManager;
-		private readonly ImageService imageService;
 
-		public AuthController(UserManager<User> userManager, ImageService imageService)
+		public AuthController(UserManager<User> userManager)
 		{
 			this.userManager = userManager;
-			this.imageService = imageService;
 		}
 
 		public IActionResult Register()
@@ -73,15 +72,15 @@ namespace Spotix.MVC.Controllers
 			else
 			{
 				var errors = identityResult.Errors.Select(e => e.Description).ToArray();
-				
+
 				//string.Join: 這個方法會將 errors 中的每個錯誤訊息用逗號和空格（, ）連接起來，形成一個單一的字串。
 				//errorMessage: 最後，合併後的錯誤訊息會被存儲在這個變數中
 				var errorMessage = string.Join(", ", errors);
 				throw new ArgumentException($"註冊失敗: {errorMessage}");
 			}
-			
+
 			return View();
-	
+
 		}
 
 		public ActionResult Logout()
@@ -141,6 +140,67 @@ namespace Spotix.MVC.Controllers
 			return Redirect(returnUrl);
 		}
 
-		
+        // 顯示修改個人資料的頁面
+
+        //[Authorize(Roles = "Admin, User")]
+        [HttpGet]
+		public async Task<IActionResult> EditProfile()
+		{
+            
+            var email = User?.FindFirst(ClaimTypes.Name)?.Value;
+
+            var user = await userManager.FindByEmailAsync(email);
+
+			if (user == null)
+			{
+				TempData["error"] = "找不到使用者!";
+				return RedirectToAction("Login");
+			}
+
+			var model = new EditProfileVM
+			{
+				UserName = user.UserName,
+				Email = user.Email,
+				Gender = user.Gender,
+				Birthday = user.Birthday,
+				Address = user.Address,
+				PhoneNumber = user.PhoneNumber
+			};
+
+			return View(model);
+		}
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> EditProfile(EditProfileVM model)
+		{
+			if (!ModelState.IsValid) return View(model);
+
+			var user = await userManager.GetUserAsync(User);
+			if (user == null)
+			{
+				TempData["error"] = "找不到使用者!";
+				return RedirectToAction("Login");
+			}
+
+			user.UserName = model.UserName;
+			user.Email = model.Email;
+			user.Gender = model.Gender;
+			user.Birthday = model.Birthday;
+			user.Address = model.Address;
+			user.PhoneNumber = model.PhoneNumber;
+
+			var result = await userManager.UpdateAsync(user);
+			if (result.Succeeded)
+			{
+				TempData["message"] = "個人資料已成功更新!";
+				return RedirectToAction("Index", "Home");
+			}
+
+			var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+			TempData["error"] = $"更新失敗: {errors}";
+			return View(model);
+		}
 	}
 }
