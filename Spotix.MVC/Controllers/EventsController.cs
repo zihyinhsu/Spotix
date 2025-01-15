@@ -266,65 +266,11 @@ namespace Spotix.MVC.Controllers
 		public async Task<IActionResult> Edit([Bind(include: "Id,Name,Info,CoverUrl,ImgUrl, PlaceId,Host,Published,FirstSessionTime")] EventVM model, int? id)
 		{
 
-
-			//if (id == null)
-			//{
-			//	return NotFound();
-			//}
-
-			//if (ModelState.IsValid)
-			//{
-			//	int placeId;
-			//	Place place = null;
-			//	// 嘗試將 PlaceName 轉換為 int
-			//	if (int.TryParse(model.PlaceName, out placeId))
-			//	{
-			//		// 如果轉換成功，根據 placeId 查找對應的 Place
-			//		place = await _context.Places.FirstOrDefaultAsync(p => p.Id == placeId);
-			//	}
-			//else
-			//{
-			//	// 如果轉換失敗，根據 PlaceName 查找對應的 Place
-			//	place = await _context.Places.FirstOrDefaultAsync(p => p.Name == model.PlaceName);
-			//}
-			//	if (place == null)
-			//	{
-			//		ModelState.AddModelError("PlaceName", "The specified place does not exist.");
-			//		ViewData["PlaceList"] = new SelectList(_context.Places, "Id", "Name");
-			//		return View(model);
-			//	}
-			//	// 創建 Event 實體
-			//	var eventEntity = new Event
-			//	{
-			//		Id = model.Id,
-			//		Name = model.Name,
-			//		Info = model.Info,
-			//		CoverUrl = model.CoverUrl,
-			//		ImgUrl = model.ImgUrl,
-			//		PlaceId = place.Id,
-			//		Host = model.Host,
-			//		Published = model.Published
-			//	};
-			//	_context.Update(eventEntity);
-			//	await _context.SaveChangesAsync();
-			//	return RedirectToAction(nameof(Index));
-			//}
-			//ViewData["PlaceList"] = new SelectList(_context.Places, "Id", "Name");
-			//return View(model);
-			//
-
 			if (!ModelState.IsValid)
 			{
 				return View(model);
 			}
 			var eventEntity = await _context.Events.AsNoTracking().Include(e => e.Place).FirstOrDefaultAsync(e => e.Id == id);
-			//eventEntity.Name = model.Name;
-			//eventEntity.Info = model.Info;
-			//eventEntity.CoverUrl = model.CoverUrl;
-			//eventEntity.ImgUrl = model.ImgUrl;
-			//eventEntity.PlaceId = model.PlaceName;
-			//eventEntity.Host = model.Host;
-			//eventEntity.Published = model.Published;
 
 
 			// 創建 Event 實體

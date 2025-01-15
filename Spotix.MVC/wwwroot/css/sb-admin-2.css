@@ -458,7 +458,7 @@ mark,
 
 .initialism {
   font-size: 90%;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
 }
 
 .blockquote {
@@ -9555,9 +9555,9 @@ button.bg-dark:focus {
   text-transform: lowercase !important;
 }
 
-.text-uppercase, .dropdown .dropdown-menu .dropdown-header, .sidebar .sidebar-heading {
+/*.text-uppercase, .dropdown .dropdown-menu .dropdown-header, .sidebar .sidebar-heading {
   text-transform: uppercase !important;
-}
+}*/
 
 .text-capitalize {
   text-transform: capitalize !important;
@@ -10377,7 +10377,7 @@ a:focus {
   margin: 0;
   white-space: nowrap;
   padding: .5rem 1.5rem;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   font-weight: 800;
   font-size: 0.65rem;
   color: #b7b9cc;
@@ -10455,7 +10455,6 @@ a:focus {
   font-weight: 800;
   padding: 1.5rem 1rem;
   text-align: center;
-  text-transform: uppercase;
   letter-spacing: 0.05rem;
   z-index: 1;
 }
