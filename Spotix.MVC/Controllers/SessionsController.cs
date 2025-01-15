@@ -18,7 +18,7 @@ namespace Spotix.MVC.Controllers
 		public SessionsController(AppDbContext context)
 		{
 			_context = context;
-		
+
 		}
 		public async Task<IActionResult> Index(
 			string sortOrder,
@@ -61,7 +61,7 @@ namespace Spotix.MVC.Controllers
 			ViewData["CurrentFilterSession"] = searchStringSession;
 
 			if (!string.IsNullOrEmpty(searchStringEvent))
-			{	
+			{
 				query = query.Where(e => e.EventName.Contains(searchStringEvent));
 			}
 			if (!string.IsNullOrEmpty(searchStringSession))
@@ -112,16 +112,47 @@ namespace Spotix.MVC.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize]
-		public async Task<IActionResult> Create([Bind(include:"Id,Name,SessionTime,AvailableTime,PublishTime,Published,EventId")] Session session)
+		public async Task<IActionResult> Create([Bind(include: "Id,Name,SessionTime,AvailableTime,PublishTime,Published,EventName, EventId")] SessionVM model)
 		{
 			if (ModelState.IsValid)
 			{
-				_context.Add(session);
-				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Index));
+				var eventSpotix = await _context.Events.FirstOrDefaultAsync(e => e.Id == model.EventId);
+				if (eventSpotix != null)
+				{
+					var session = new Session
+					{
+						Name = model.Name,
+						SessionTime = model.SessionTime,
+						AvailableTime = model.AvailableTime,
+						PublishTime = model.PublishTime,
+						Published = model.Published,
+						EventId = (int)model.EventId
+					};
+
+
+					_context.Sessions.Add(session);
+					await _context.SaveChangesAsync();
+					return RedirectToAction(nameof(Index));
+				}
+
+				ModelState.AddModelError("", "Invalid event.");
+
 			}
-			ViewData["EventList"] = new SelectList(_context.Events, "Id", "Name", session.EventId);
-			return View(session);
+			else
+			{
+				// 遍歷 ModelState 並顯示具體錯誤訊息
+				foreach (var state in ModelState)
+				{
+					foreach (var error in state.Value.Errors)
+					{
+						// 這裡可以將錯誤訊息記錄到日誌或顯示在視圖中
+						Console.WriteLine($"Property: {state.Key}, Error: {error.ErrorMessage}");
+					}
+				}
+			}
+
+			ViewData["EventList"] = new SelectList(_context.Events, "Id", "Name");
+			return View(model);
 		}
 
 		public async Task<IActionResult> Edit(int? id)
@@ -130,46 +161,52 @@ namespace Spotix.MVC.Controllers
 			{
 				return NotFound();
 			}
-			var session = await _context.Sessions.FindAsync(id);
+			var session = await _context.Sessions.AsNoTracking().Include(s => s.Event).FirstOrDefaultAsync(s => s.Id == id);
 			if (session == null)
 			{
 				return NotFound();
 			}
+			var sessionVM = new SessionVM
+			{
+				Id = session.Id,
+				Name = session.Name,
+				SessionTime = session.SessionTime,
+				AvailableTime = session.AvailableTime,
+				PublishTime = session.PublishTime,
+				Published = session.Published,
+				EventId = session.EventId
+
+			};
 			ViewData["EventList"] = new SelectList(_context.Events, "Id", "Name", session.EventId);
-			return View(session);
+			return View(sessionVM);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize]
-		public async Task<IActionResult> Edit(int id, [Bind(include: "Id,Name,SessionTime,AvailableTime,PublishTime,Published,EventId")] Session session)
+		public async Task<IActionResult> Edit([Bind(include: "Id,Name,SessionTime,AvailableTime,PublishTime,Published,EventName, EventId")] SessionVM model, int? id)
 		{
-			if (id != session.Id)
+			if (!ModelState.IsValid)
 			{
-				return NotFound();
+				return View(model);
 			}
-			if (ModelState.IsValid)
+
+			var session = await _context.Sessions.AsNoTracking().Include(s => s.Event).FirstOrDefaultAsync(s => s.Id == id);
+			
+			var sessionEdit = new Session
 			{
-				try
-				{
-					_context.Update(session);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!SessionExists(session.Id))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				return RedirectToAction(nameof(Index));
-			}
-			ViewData["EventList"] = new SelectList(_context.Events, "Id", "Name", session.EventId);
-			return View(session);
+				Id = model.Id,
+				Name = model.Name,
+				SessionTime = model.SessionTime,
+				AvailableTime = model.AvailableTime,
+				PublishTime = model.PublishTime,
+				Published = model.Published,
+				EventId = (int)model.EventId
+			};
+			_context.Update(sessionEdit);
+			await _context.SaveChangesAsync();
+			ViewData["EventList"] = new SelectList(_context.Events, "Id", "Name", sessionEdit.EventId);
+			return RedirectToAction(nameof(Index));
 		}
 
 		public async Task<IActionResult> Delete(int? id)
@@ -178,14 +215,23 @@ namespace Spotix.MVC.Controllers
 			{
 				return NotFound();
 			}
-			var session = await _context.Sessions
-				.Include(s => s.Event)
-				.FirstOrDefaultAsync(m => m.Id == id);
+			var session = await _context.Sessions.Include(s => s.Event).FirstOrDefaultAsync(s => s.Id == id);
 			if (session == null)
 			{
 				return NotFound();
 			}
-			return View(session);
+			var sessionVM = new SessionVM
+			{
+				Id = session.Id,
+				Name = session.Name,
+				SessionTime = session.SessionTime,
+				AvailableTime = session.AvailableTime,
+				PublishTime = session.PublishTime,
+				Published = session.Published,
+				EventName = session.Event.Name,
+				EventId = session.EventId
+			};
+			return View(sessionVM);
 		}
 
 		[HttpPost]
@@ -202,9 +248,9 @@ namespace Spotix.MVC.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		private bool SessionExists(int id)
-		{
-			return _context.Sessions.Any(e => e.Id == id);
-		}
 	}
 }
+			
+
+
+

@@ -1,7 +1,8 @@
-﻿@model Spotix.Utilities.Models.EFModels.Session
+﻿@using Spotix.Utilities.Models
+@model Spotix.Utilities.Models.ViewModels.SessionVM
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "新增";
 }
 
 
@@ -13,22 +14,22 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
            
             <div class="mb-3">
-                <label asp-for="Name" class="control-label">場次名稱</label>
+                <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="SessionTime" class="control-label">開演時間</label>
+                <label asp-for="SessionTime" class="control-label"></label>
                 <input asp-for="SessionTime" class="form-control" />
                 <span asp-validation-for="SessionTime" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="AvailableTime" class="control-label">開賣時間</label>
+                <label asp-for="AvailableTime" class="control-label"></label>
                 <input asp-for="AvailableTime" class="form-control" />
                 <span asp-validation-for="AvailableTime" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="PublishTime" class="control-label">上架時間</label>
+                <label asp-for="PublishTime" class="control-label"></label>
                 <input asp-for="PublishTime" class="form-control" />
                 <span asp-validation-for="PublishTime" class="text-danger"></span>
             </div>
@@ -52,6 +53,4 @@
 
 
 
-@* @section Scripts { *@
-@*     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@
-@* } *@
+
