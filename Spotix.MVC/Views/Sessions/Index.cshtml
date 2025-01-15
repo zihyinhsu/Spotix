@@ -3,7 +3,7 @@
 @model PaginatedList<Spotix.Utilities.Models.ViewModels.SessionVM>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "場次清單";
 }
 
 <h1 class="fw-bolder m-3">場次清單</h1>
@@ -31,8 +31,8 @@
             </div>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary mt-1">搜尋</button>
-            <button class="btn btn-secondary mt-1" onclick="clearSearch();">重設</button>
+        <button type="submit" class="btn btn-primary mt-1">查詢資料</button>
+        <button class="btn btn-outline-secondary mt-1" onclick="clearSearch();">清空查詢</button>
         </div>
         <hr class="mt-0">
         <p>
@@ -52,9 +52,7 @@
                 </div>
             </div>
         </div>
-    <p>
-        <a asp-action="Create">新增一筆</a>
-    </p>
+
         <div class="table-responsive">
 
             <table class="table table-bordered">
@@ -167,71 +165,6 @@
         </div>
     </div>
 </form>
-
-
-<p>
-    <a asp-action="Create">新增一筆</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th> 
-                @Html.DisplayNameFor(model => model[0].Id)
-            </th> 
-            <th>
-                @Html.DisplayNameFor(model => model[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model[0].SessionTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model[0].AvailableTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model[0].PublishTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model[0].Published)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model[0].EventName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SessionTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AvailableTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PublishTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Published)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |  *@
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
 
 @section Scripts
 {

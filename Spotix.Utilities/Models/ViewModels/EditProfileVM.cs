@@ -9,23 +9,11 @@ namespace Spotix.Utilities.Models.ViewModels
 {
     public class EditProfileVM
     {
-        public string Id { get; set; }
-
-        [Required]
         public string UserName { get; set; }
-
-        [Required, EmailAddress]
         public string Email { get; set; }
-
-        [Required]
         public bool Gender { get; set; }
-
-        [DataType(DataType.Date)]
         public DateTime Birthday { get; set; }
-
         public string Address { get; set; }
-
-        [DataType(DataType.Url)]
-        public string AvatarUrl { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

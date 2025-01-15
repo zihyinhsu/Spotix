@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Spotix.Utilities.Models.ViewModels.PlaceVM>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "場地清單";
 }
 
 <h1 class="fw-bolder m-3">場地清單</h1>
@@ -13,7 +13,7 @@
     <div class="form-group mt-3 ">
         <input type="text" name="searchTerm" class="form-control" placeholder="搜尋名稱" value="@ViewBag.SearchTerm" />
         <button type="submit" class="btn btn-primary mt-3">搜尋</button>
-        <a asp-action="Index" class="btn btn-secondary mt-3">重設</a>
+        <a asp-action="Index" class="btn btn-outline-secondary mt-3">重設</a>
     </div>
 
     <hr />
