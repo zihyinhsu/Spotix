@@ -142,65 +142,132 @@ namespace Spotix.MVC.Controllers
 
         // 顯示修改個人資料的頁面
 
-        //[Authorize(Roles = "Admin, User")]
-        [HttpGet]
-		public async Task<IActionResult> EditProfile()
-		{
-            
-            var email = User?.FindFirst(ClaimTypes.Name)?.Value;
 
-            var user = await userManager.FindByEmailAsync(email);
 
-			if (user == null)
-			{
-				TempData["error"] = "找不到使用者!";
-				return RedirectToAction("Login");
-			}
+        //      [Authorize(Roles = "Admin, User")]
+        //      [HttpGet]
+        //public async Task<IActionResult> EditProfile()
+        //{
 
-			var model = new EditProfileVM
-			{
-				UserName = user.UserName,
-				Email = user.Email,
-				Gender = user.Gender,
-				Birthday = user.Birthday,
-				Address = user.Address,
-				PhoneNumber = user.PhoneNumber
-			};
+        //          var email = User?.FindFirst(ClaimTypes.Name)?.Value;
 
-			return View(model);
-		}
+        //          var user = await userManager.FindByEmailAsync(email);
+
+        //	if (user == null)
+        //	{
+        //		TempData["error"] = "找不到使用者!";
+        //		return RedirectToAction("Login");
+        //	}
+
+        //	var model = new EditProfileVM
+        //	{
+        //		UserName = user.UserName,
+        //		Gender = user.Gender,
+        //		Birthday = user.Birthday,
+        //		Address = user.Address,
+        //		PhoneNumber = user.PhoneNumber
+        //	};
+
+        //	return View(model);
+        //}
+
+        //      [Authorize(Roles = "Admin, User")]
+        //      [HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> EditProfile(EditProfileVM model)
+        //{
+        //	if (!ModelState.IsValid) return View(model);
+
+        //	var user = await userManager.GetUserAsync(User);
+        //	if (user == null)
+        //	{
+        //		TempData["error"] = "找不到使用者!";
+        //		return RedirectToAction("Login");
+        //	}
+
+        //	user.UserName = model.UserName;
+        //	user.Gender = model.Gender;
+        //	user.Birthday = model.Birthday;
+        //	user.Address = model.Address;
+        //	user.PhoneNumber = model.PhoneNumber;
+
+        //	var result = await userManager.UpdateAsync(user);
+        //	if (result.Succeeded)
+        //	{
+        //		TempData["message"] = "個人資料已成功更新!";
+        //		return RedirectToAction("Index", "Home");
+        //	}
+
+        //	var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+        //	TempData["error"] = $"更新失敗: {errors}";
+        //	return View(model);
+        //}
 
         [Authorize(Roles = "Admin, User")]
+        [HttpGet]
+        public async Task<IActionResult> EditProfile()
+        {
+            var email = User?.FindFirst(ClaimTypes.Name)?.Value;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                TempData["error"] = "無法識別當前使用者!";
+                return RedirectToAction("Login");
+            }
+
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                TempData["error"] = "找不到使用者!";
+                return RedirectToAction("Login");
+            }
+
+            var model = new EditProfileVM
+            {
+                UserName = user.UserName,
+                Gender = user.Gender,
+                Birthday = user.Birthday,
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber
+            };
+
+            return View(model);
+        }
+        [Authorize(Roles = "Admin, User")]
         [HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> EditProfile(EditProfileVM model)
-		{
-			if (!ModelState.IsValid) return View(model);
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(EditProfileVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-			var user = await userManager.GetUserAsync(User);
-			if (user == null)
-			{
-				TempData["error"] = "找不到使用者!";
-				return RedirectToAction("Login");
-			}
+            var email = User?.FindFirst(ClaimTypes.Name)?.Value;
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                TempData["error"] = "找不到使用者!";
+                return RedirectToAction("Login");
+            }
 
-			user.UserName = model.UserName;
-			user.Email = model.Email;
-			user.Gender = model.Gender;
-			user.Birthday = model.Birthday;
-			user.Address = model.Address;
-			user.PhoneNumber = model.PhoneNumber;
+            user.UserName = model.UserName;
+            user.Gender = model.Gender;
+            user.Birthday = model.Birthday;
+            user.Address = model.Address;
+            user.PhoneNumber = model.PhoneNumber;
 
-			var result = await userManager.UpdateAsync(user);
-			if (result.Succeeded)
-			{
-				TempData["message"] = "個人資料已成功更新!";
-				return RedirectToAction("Index", "Home");
-			}
+            var result = await userManager.UpdateAsync(user);
 
-			var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-			TempData["error"] = $"更新失敗: {errors}";
-			return View(model);
-		}
-	}
+            if (result.Succeeded)
+            {
+                TempData["message"] = "個人資料已成功更新!";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            TempData["error"] = $"更新失敗: {errors}";
+            return View(model);
+        }
+    }
 }
