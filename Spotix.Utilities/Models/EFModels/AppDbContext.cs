@@ -97,7 +97,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 			entity.Property(e => e.Info).IsRequired();
 			entity.Property(e => e.Name)
 				.IsRequired()
-				.HasMaxLength(50);
+				.HasMaxLength(100);
 			entity.Property(e => e.Published).HasDefaultValue(true);
 
 			entity.HasOne(d => d.Place).WithMany(p => p.Events)

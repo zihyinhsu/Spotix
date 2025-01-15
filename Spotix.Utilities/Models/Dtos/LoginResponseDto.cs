@@ -12,5 +12,6 @@ namespace Spotix.Utilities.Models.DTOs
 		public string Email { get; set; }
 		public string JwtToken { get; set; }
 		public string AvatarUrl { get; set; }
+		public string PhoneNumber { get; set; }
 	}
 }
