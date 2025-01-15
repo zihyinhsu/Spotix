@@ -1,66 +1,68 @@
 ﻿@model Spotix.Utilities.Models.ViewModels.EventVM
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "活動清單";
 }
 
-<h4 class="fw-bolder mt-5">編輯活動內容 : </h4>
+<div class="container">
+<h4 class="fw-bolder my-3">編輯活動內容</h4>
 <hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="mb-3">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Info" class="control-label"></label>
-                <textarea asp-for="Info" class="form-control" id="infoEditor"></textarea>
-                <span asp-validation-for="Info" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="CoverUrl" class="control-label"></label>
-                <input asp-for="CoverUrl" class="form-control" />
-                <span asp-validation-for="CoverUrl" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="ImgUrl" class="control-label"></label>
-                <input asp-for="ImgUrl" class="form-control" />
-                <span asp-validation-for="ImgUrl" class="text-danger"></span>
-            </div>
-            @* <div class="mb-3"> *@
-            @*     <label asp-for="PlaceName" class="control-label"></label> *@
-            @*     <select asp-for="PlaceName" class="form-control" asp-items="ViewBag.PlaceList"></select> *@
-            @*     <span asp-validation-for="PlaceName" class="text-danger"></span> *@
-            @* </div> *@
-            <div class="mb-3">
-                <label asp-for="PlaceId" class="control-label"></label>
-                <select asp-for="PlaceId" class="form-control" asp-items="ViewBag.PlaceList"></select>
-                <span asp-validation-for="PlaceId" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Host" class="control-label"></label>
-                <input asp-for="Host" class="form-control" />
-                <span asp-validation-for="Host" class="text-danger"></span>
-            </div>
-            <div class="mb-3 form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
-                </label>
-            </div>
-            @* <div class="mb-3"> *@
-            @*     <label asp-for="FirstSessionTime" class="control-label"></label> *@
-            @*     @Html.DisplayFor(model => model.FirstSessionTime) *@
-            @* </div> *@
-            
-            <div class="mb-3 mt-5">
-                <input type="submit" value="儲存變更" class="btn btn-outline-primary" /> |
-                <a asp-action="Index" class="btn btn-secondary">回到清單頁</a>
-            </div>
-        </form>
+                <div class="mb-3">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Info" class="control-label"></label>
+                    <textarea asp-for="Info" class="form-control" id="infoEditor"></textarea>
+                    <span asp-validation-for="Info" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CoverUrl" class="control-label"></label>
+                    <input asp-for="CoverUrl" class="form-control" />
+                    <span asp-validation-for="CoverUrl" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ImgUrl" class="control-label"></label>
+                    <input asp-for="ImgUrl" class="form-control" />
+                    <span asp-validation-for="ImgUrl" class="text-danger"></span>
+                </div>
+                @* <div class="mb-3"> *@
+                @*     <label asp-for="PlaceName" class="control-label"></label> *@
+                @*     <select asp-for="PlaceName" class="form-control" asp-items="ViewBag.PlaceList"></select> *@
+                @*     <span asp-validation-for="PlaceName" class="text-danger"></span> *@
+                @* </div> *@
+                <div class="mb-3">
+                    <label asp-for="PlaceId" class="control-label"></label>
+                    <select asp-for="PlaceId" class="form-control" asp-items="ViewBag.PlaceList"></select>
+                    <span asp-validation-for="PlaceId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Host" class="control-label"></label>
+                    <input asp-for="Host" class="form-control" />
+                    <span asp-validation-for="Host" class="text-danger"></span>
+                </div>
+                <div class="mb-3 form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
+                    </label>
+                </div>
+                @* <div class="mb-3"> *@
+                @*     <label asp-for="FirstSessionTime" class="control-label"></label> *@
+                @*     @Html.DisplayFor(model => model.FirstSessionTime) *@
+                @* </div> *@
+
+                <div class="mb-3 mt-5">
+                    <input type="submit" value="儲存變更" class="btn btn-outline-primary mr-2" />
+                    <a asp-action="Index" class="btn btn-secondary">回到清單頁</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

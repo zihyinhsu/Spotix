@@ -3,10 +3,9 @@
 @{
     ViewData["Title"] = "場地清單";
 }
-
 <h1 class="fw-bolder m-3">場地清單</h1>
 
-<hr/>
+<hr />
 <!-- 查詢表單 -->
 <h4 class="mt-3 ml-3">搜尋場地</h4>
 <form method="get" asp-action="Index" class="ml-3">
@@ -22,42 +21,43 @@
         <a asp-action="Create" class="btn btn-primary mt-2">新增</a>
     </p>
     <hr />
-<!-- 清單顯示 -->
+    <!-- 清單顯示 -->
     <div class="table-responsive">
         <table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>
-                @* @Html.DisplayNameFor(model => model.Name) *@場地名稱
-            </th>
-            <th>
-                @* @Html.DisplayNameFor(model => model.DisplayOrder) *@顯示順序
-            </th>
-            <th>
-                @*  @Html.DisplayNameFor(model => model.Enabled) *@是否可使用
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DisplayOrder)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Enabled)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">編輯</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">刪除</a>
-            </td>
-        </tr>
-}
-    </tbody>
-    </table>
+            <thead>
+                <tr>
+                    <th>
+                        @* @Html.DisplayNameFor(model => model.Name) *@場地名稱
+                    </th>
+                    <th>
+                        @* @Html.DisplayNameFor(model => model.DisplayOrder) *@顯示順序
+                    </th>
+                    <th>
+                        @*  @Html.DisplayNameFor(model => model.Enabled) *@是否可使用
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DisplayOrder)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Enabled)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">編輯</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">刪除</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </form>

@@ -20,3 +20,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+    height:300px !important;
+}
+
+.test {
+    color:red;
+}

@@ -21,7 +21,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
  
     <!-- Custom styles for this template-->
-    <link href="~/css/site.css" />
+    <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
     @RenderSection("styles", required: false)
     <!-- jQuery and validation scripts -->
@@ -87,6 +87,7 @@
                                 <a class="collapse-item" href="~/Events/Index">活動清單</a>
                                 <a class="collapse-item" href="~/Sessions/Index">場次列表</a>
                                 <a class="collapse-item" href="~/Areas/Index">各區票價</a>
+                                <a class="collapse-item" href="~/Orders/Index">訂單管理</a>
 
                     </div>
                 </div>
@@ -146,7 +147,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">

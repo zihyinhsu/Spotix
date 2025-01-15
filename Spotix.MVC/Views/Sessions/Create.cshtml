@@ -2,7 +2,7 @@
 @model Spotix.Utilities.Models.ViewModels.SessionVM
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "場次清單";
 }
 
 <h2 class="fw-bolder m-3">新增場次</h2>
@@ -43,7 +43,7 @@
                 <span asp-validation-for="EventId" class="text-danger"></span>
             </div>
             <div class="m-3">
-                <input type="submit" value="新增" class="btn btn-outline-primary" />
+                <input type="submit" value="新增" class="btn btn-outline-primary mr-2" />
                 <a asp-action="Index" class="btn btn-secondary">回到清單頁</a>
             </div>
         </form>

@@ -1,52 +1,53 @@
 ﻿@model Spotix.Utilities.Models.ViewModels.AreaVM
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "票價座位區";
 }
+<div class="container">
+    <h4 class="fw-bolder my-3">編輯區域和票價</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h4 class="fw-bolder mt-5">編輯區域和票價 : </h4>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="mb-3">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Price" class="control-label"></label>
-                <textarea asp-for="Price" class="form-control" id="PriceEditor">  </textarea>
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="SessionId" class="control-label">場次名稱</label>
-                <select asp-for="SessionId" class="form-control" asp-items="ViewBag.SessionList"></select>
-                <span asp-validation-for="SessionId" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Qty" class="control-label">數量(無法修改)</label>
-                <div class="mb-3" style="background-color: white; border: 1px solid lightgray; padding: 10px;">
-                    @Html.DisplayFor(model => model.Qty)
+                <div class="mb-3">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-                @* <input asp-for="Qty" class="form-control" /> *@
-                @* <span asp-validation-for="Qty" class="text-danger"></span> *@
-                @* <input asp-for="Qty" class="form-control" /> *@
-                @* <span asp-validation-for="Qty" class="text-danger"></span> *@
-            </div>
-            <div class="mb-3">
-                <label asp-for="DisplayOrder" class="control-label"></label>
-                <input asp-for="DisplayOrder" class="form-control" />
-                <span asp-validation-for="DisplayOrder" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="Price" class="control-label"></label>
+                    <textarea asp-for="Price" class="form-control" id="PriceEditor">  </textarea>
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SessionId" class="control-label">場次名稱</label>
+                    <select asp-for="SessionId" class="form-control" asp-items="ViewBag.SessionList"></select>
+                    <span asp-validation-for="SessionId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Qty" class="control-label">數量(無法修改)</label>
+                    <div class="mb-3" style="background-color: #eef0f3; border: 1px solid lightgray; padding: 10px; cursor:not-allowed">
+                        @Html.DisplayFor(model => model.Qty)
+                    </div>
+                    @* <input asp-for="Qty" class="form-control" /> *@
+                    @* <span asp-validation-for="Qty" class="text-danger"></span> *@
+                    @* <input asp-for="Qty" class="form-control" /> *@
+                    @* <span asp-validation-for="Qty" class="text-danger"></span> *@
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DisplayOrder" class="control-label"></label>
+                    <input asp-for="DisplayOrder" class="form-control" />
+                    <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                </div>
 
-            <div class="mb-3 mt-5">
-                <input type="submit" value="儲存變更" class="btn btn-outline-primary" /> |
-                <a asp-action="Index" class="btn btn-secondary">回到清單頁</a>
-            </div>
-        </form>
+                <div class="mb-3 mt-5">
+                    <input type="submit" value="儲存變更" class="btn btn-outline-primary mr-2" />
+                    <a asp-action="Index" class="btn btn-secondary">回到清單頁</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
