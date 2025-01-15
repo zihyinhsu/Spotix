@@ -91,15 +91,14 @@
                                 @Html.DisplayFor(modelItem => item.Published)
                             </td>
                             <td>
-                            <td>
                                 @Html.DisplayFor(modelItem => item.FirstSessionTime)
                                 @* @if (item.FirstSessionTime != null) *@
                                 @* { *@
                                 @*     @Convert.ToDateTime(item.FirstSessionTime).ToString("yyyy/MM/dd") *@
                                 @* } *@
+                            </td>
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) | *@
                                 @Html.ActionLink("Delete", "Delete", new {  id=item.Id })
                             </td>
 

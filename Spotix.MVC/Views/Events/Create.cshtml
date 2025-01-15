@@ -19,8 +19,8 @@
             </div>
             <div class="mb-3">
                 <label asp-for="Info" class="control-label"></label>
-                <textarea asp-for="Info" class="form-control" id="infoEditor">  </textarea>
-                <span asp-validation-for="Info" class="text-danger"></span> 
+                <textarea asp-for="Info" class="form-control" id="infoEditor"></textarea>
+                <span asp-validation-for="Info" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="CoverUrl" class="control-label"></label>
@@ -72,15 +72,9 @@
                 console.error(error);
             });
 
-        // document.getElementById('saveDraftButton').addEventListener('click', function() {
-        //     將 CKEditor 的內容同步到對應的輸入框
-        //     document.querySelector('textarea[name="Info"]').value = editor.getData();
-        //     alert('內容已暫存');
-        // });
-
         // 在表單提交之前同步 CKEditor 的內容
-        // document.querySelector('form').addEventListener('submit', function() {
-        //     document.querySelector('textarea[name="Info"]').value = editor.getData();
-        // });
+        document.getElementById('eventForm').addEventListener('submit', function() {
+            document.querySelector('textarea[name="Info"]').value = editor.getData();
+        });
     </script>
 }
