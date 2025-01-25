@@ -1,0 +1,78 @@
+﻿@model Spotix.Utilities.Models.ViewModels.EventVM
+
+@{
+    ViewData["Title"] = "活動清單";
+}
+
+<h2 class="fw-bolder m-3">刪除確認</h2>
+
+<h5 class="m-3">您確定要刪除這個活動嗎?</h5>
+<hr class="mx-4" />
+<div class="px-4 pb-4">
+    <div class="row mr-0">
+        <div class="col-2 py-3">
+            @Html.DisplayNameFor(model => model.Name)
+        </div>
+        <div class="col-10 py-3">
+            @Html.DisplayFor(model => model.Name)
+        </div>
+        <div class="col-2 py-3">
+            @Html.DisplayNameFor(model => model.Info)
+        </div>
+        <div class="col-10 py-3" style="border: 1px solid lightgray;border-radius: 5px; height:300px; overflow-y:auto;">
+            <p id="info">@ViewBag.Content</p>
+        </div>
+        <div class="col-2 py-3">
+            @Html.DisplayNameFor(model => model.CoverUrl)
+        </div>
+        <div class="col-10 py-3">
+            @Html.DisplayFor(model => model.CoverUrl)
+        </div>
+        <div class="col-2 py-3">
+            @Html.DisplayNameFor(model => model.ImgUrl)
+        </div>
+        <div class="col-10 py-3">
+            @Html.DisplayFor(model => model.ImgUrl)
+        </div>
+        <div class="col-2 py-3">
+            @Html.DisplayNameFor(model => model.PlaceName)
+        </div>
+        <div class="col-10 py-3">
+            @Html.DisplayFor(model => model.PlaceName)
+        </div>
+        @* <dt class = "col-2"> *@
+        @*     @Html.DisplayNameFor(model => model.PlaceId) *@
+        @* </dt> *@
+        @* <dd class = "col-10"> *@
+        @*     @Html.DisplayFor(model => model.PlaceId) *@
+        @* </dd> *@
+        <div class="col-2 py-3">
+            @Html.DisplayNameFor(model => model.Host)
+        </div>
+        <div class="col-10 py-3">
+            @Html.DisplayFor(model => model.Host)
+        </div>
+        <div class="col-2 py-3">
+            @Html.DisplayNameFor(model => model.Published)
+        </div>
+        <div class="col-10 py-3">
+            @Html.DisplayFor(model => model.Published)
+        </div>
+        @*     <dt class = "col-2"> *@
+        @*         @Html.DisplayNameFor(model => model.FirstSessionTime) *@
+        @*     </dt> *@
+        @*     <dd class = "col-10"> *@
+        @*         @Html.DisplayFor(model => model.FirstSessionTime) *@
+        @*     </dd> *@
+        @* </dl> *@
+    </div>
+    <form asp-action="Delete" class="my-3">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="刪除" class="btn btn-outline-danger mr-2" />
+        <a asp-action="Index" class="btn btn-secondary">回到清單頁</a>
+    </form>
+</div>
+<script>
+    const info = document.getElementById("info")
+    info.innerHTML = @Html.Raw(Json.Serialize(ViewBag.Content));
+</script>

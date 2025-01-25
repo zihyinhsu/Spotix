@@ -90,7 +90,8 @@ namespace Spotix.API.Controllers
 							UserName = user.UserName,
 							Email = user.Email,
 							JwtToken = jwtToken,
-							AvatarUrl = user.AvatarUrl
+							AvatarUrl = user.AvatarUrl,
+							PhoneNumber = user.PhoneNumber
 						};
 
 						HttpContext.Items["message"] = "登入成功";

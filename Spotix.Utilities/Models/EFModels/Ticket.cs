@@ -29,4 +29,5 @@ public partial class Ticket
 	public virtual Area Area { get; set; }
 
 	public virtual Order Order { get; set; }
+
 }

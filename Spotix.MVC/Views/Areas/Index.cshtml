@@ -1,0 +1,196 @@
+﻿@using Spotix.Utilities.Models
+
+@model PaginatedList<Spotix.Utilities.Models.ViewModels.AreaVM>
+
+@{
+    ViewData["Title"] = "票價座位區";   
+}
+
+<h1 class="fw-bolder m-3">票價座位區</h1>
+
+<hr />
+@* <h4 class="mt-3 ml-3">搜尋場次</h4> *@
+
+<form asp-action="Index" class="p-4" id="form_search">
+    <div class="row">
+        <div class="col-sm col-md-6 col-lg-3 col-xl-3">
+            <label class="session-label">場次名稱</label>
+            <div class="form-group form-row">
+                <div class="col">
+                    <input id="input_Name" type="text" class="form-control mr-2" name="searchStringSession" value="@ViewData["CurrentFilterSession"]" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary mt-1">查詢資料</button>
+        <button class="btn btn-outline-secondary mt-1" onclick="clearSearch();">清空查詢</button>
+    </div>
+    <hr class="mt-0">
+
+    <div class="row mb-4">
+        <div class="col-8">
+            <select class="form-control" name="sortOrder" onchange="this.form.submit()">
+                <option value="0" selected="@((string)ViewData["CurrentSort"] == "0" )">預設排序</option>
+                <option value="1" selected="@((string)ViewData["CurrentSort"] == "1" )">顯示順序↓ </option>
+                <option value="2" selected="@((string)ViewData["CurrentSort"] == "2" )">顯示順序↑</option>
+                <option value="3" selected="@((string)ViewData["CurrentSort"] == "3" )">價位↓</option>
+                <option value="4" selected="@((string)ViewData["CurrentSort"] == "4" )">價位↑</option>
+            </select>
+        </div>
+        <div class="col-4">
+            <a asp-action="Create" class="btn btn-primary">新增一筆</a>
+        </div>
+    </div>
+
+    @* <h4 class="mt-3">新增區域</h4> *@
+    @*     <a asp-action="Create" class="btn btn-primary mt-2">新增</a> *@
+
+    @*     <hr class="mt-0"> *@
+    @*     <div class="d-flex justify-content-end"> *@
+    @*         <div class="col-2 px-0"> *@
+    @*             <div class="form-group"> *@
+    @*                 <select class="form-control" name="sortOrder" onchange="this.form.submit()"> *@
+    @*                     <option value="0" selected="@((string)ViewData["CurrentSort"] == "0" )">預設排序</option> *@
+    @*                     <option value="1" selected="@((string)ViewData["CurrentSort"] == "1" )">顯示順序↓ </option> *@
+    @*                     <option value="2" selected="@((string)ViewData["CurrentSort"] == "2" )">顯示順序↑</option> *@
+    @*                     <option value="3" selected="@((string)ViewData["CurrentSort"] == "3" )">價位↓</option> *@
+    @*                     <option value="4" selected="@((string)ViewData["CurrentSort"] == "4" )">價位↑</option> *@
+    @*                 </select> *@
+    @*             </div> *@
+    @*         </div> *@
+    @*     </div> *@
+        @* <p> *@
+        @*     <a asp-action="Create">新增一筆</a> *@
+        @* </p> *@
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            區域名稱
+                        </th>
+                        <th>
+                            價位  
+                        </th>
+                        <th>
+                            場次名稱 
+                        </th>
+                        <th>
+                            座位數量 
+                        </th>
+                        <th>
+                            顯示順序
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SessionName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Qty)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DisplayOrder)
+                            </td>
+                            <td>
+                                @* @Html.ActionLink("編輯", "Edit", new { id = item.Id }) | *@
+                                @* @Html.ActionLink("刪除", "Delete", new { id = item.Id }) *@
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">編輯</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">刪除</a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+
+    <div class="list-pagination mt-3">
+        <div class="form-inline text-center">
+            <div class="mx-auto">
+                每頁
+                <select class="event-select" name="pageSize" onchange="changePageSize()">
+                    <option value="5" selected="@((int)ViewData["pageSize"]==5)">5</option>
+                    <option value="10" selected="@((int)ViewData["pageSize"]==10)">10</option>
+                    <option value="30" selected="@((int)ViewData["pageSize"]==30)">30</option>
+                    <option value="50" selected="@((int)ViewData["pageSize"]==50)">50</option>
+                </select>，第 <span>@(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) / @Model.TotalPages</span> 頁，共 <span>@Model.TotalPages</span> 頁，
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-currentFilterSession="@ViewData["CurrentFilterSession"]"
+                   asp-route-pageSize="@ViewData["PageSize"]"
+                   class="btn btn-outline-secondary btn-sm @prevDisabled">
+                    上一頁
+                </a>｜跳至第
+                <select id="select_goToPage" class="event-select" name="goToPageNumber" onchange="goToPage();">
+                    <option>
+                        選擇
+                    </option>
+                    @for (var i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <option value="@i" selected="@(Model.PageIndex == i)">
+                            @i
+                        </option>
+                    }
+                </select>
+                頁｜
+
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-currentFilterSession="@ViewData["CurrentFilterSession"]"
+                   asp-route-pageSize="@ViewData["PageSize"]"
+                   class="btn btn-outline-secondary btn-sm @nextDisabled">
+                    下一頁
+                </a>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function clearSearch() {
+            $('#input_Name').val('')
+            $('#input_SessionName').val('')
+            $('#form_search').submit()
+        }
+        function goToPage() {
+            $('#form_search').submit()
+        }
+        function changePageSize() {
+            $('#form_search').submit()
+        }
+    </script>
+}
+
+
+
+
+
+
+
