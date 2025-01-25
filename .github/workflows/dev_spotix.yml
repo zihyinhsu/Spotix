@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'Spotix'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_30D940E955E94157A85A321920567B09 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_347A1BC0BB5545BF9D3490BEDBC930F9 }}
           package: .
