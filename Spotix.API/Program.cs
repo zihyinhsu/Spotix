@@ -148,8 +148,8 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
 	app.UseSwagger();
 	app.UseSwaggerUI();
 	// ¼È®É¾Ö¦³/
@@ -169,7 +169,7 @@ if (app.Environment.IsDevelopment())
 	//		context.Response.Redirect("/swagger");
 	//	});
 	//});
-}
+//}
 
 
 app.UseHttpsRedirection();
