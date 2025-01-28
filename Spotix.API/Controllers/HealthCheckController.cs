@@ -23,17 +23,11 @@ namespace Spotix.API.Controllers
 			{
 				// 執行簡單的 SQL 查詢以測試資料庫連線
 				await _dbContext.Database.ExecuteSqlRawAsync("SELECT 1");
-				HttpContext.Items["message"] = "資料庫連線成功";
-
 				return Ok();
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(500, new
-				{
-					Status = "Unhealthy",
-					Message = $"資料庫連線失敗: {ex.Message}"
-				});
+				return StatusCode(500);
 			}
 		}
 	}
