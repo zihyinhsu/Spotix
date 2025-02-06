@@ -19,30 +19,28 @@ namespace Spotix.API.Controllers
 		[HttpHead]
 		public async Task<IActionResult> CheckHealth()
 		{
-			try
+			// 轉成台北時區
+			TimeZoneInfo taipeiTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
+			var taipeiTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, taipeiTimeZone).TimeOfDay;
+
+
+			// 定義允許執行的時間範圍
+			var startTime = new TimeSpan(8, 0, 0);
+			var endTime = new TimeSpan(19, 0, 0);
+
+			// 檢查當前時間是否在允許的時間範圍內
+			if (taipeiTime >= startTime && taipeiTime <= endTime)
 			{
-				var currentTime = DateTime.Now.TimeOfDay;
-
-				// 定義允許執行的時間範圍
-				var startTime = new TimeSpan(8, 0, 0); 
-				var endTime = new TimeSpan(19, 0, 0);
-
-				// 檢查當前時間是否在允許的時間範圍內
-				if (currentTime >= startTime && currentTime <= endTime)
-				{
-					// 執行簡單的 SQL 查詢以測試資料庫連線
-					await _dbContext.Database.ExecuteSqlRawAsync("SELECT 1");
-					return Ok();
-				}
-				else
-				{
-					return StatusCode(403, "SQL 查詢僅允許在每天的 8:00 到 19:00 之間執行。");
-				}
+				// 執行簡單的 SQL 查詢以測試資料庫連線
+				await _dbContext.Database.ExecuteSqlRawAsync("SELECT 1");
+				return Ok();
 			}
-			catch (Exception ex)
+			else
 			{
-				return StatusCode(500);
+				return StatusCode(403, "SQL 查詢僅允許在每天的 8:00 到 19:00 之間執行。");
 			}
 		}
+
 	}
 }
+
